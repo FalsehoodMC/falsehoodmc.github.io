@@ -1,0 +1,3055 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css2?family=Fira+Mono&family=Fira+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+	<title>Fabrication &amp; Forgery</title>
+	<style>
+		body {
+			margin: 0;
+			font-family: 'Fira Sans', sans-serif;
+			background: #263238;
+			color: #ECEFF1;
+			line-height: 1.4;
+			font-size: 16px;
+			padding-bottom: 80vh;
+		}
+		code {
+			font-family: 'Fira Mono', monospace;
+			background: rgba(0, 0, 0, 0.2);
+			padding: .125em;
+			font-size: .75em;
+			border-radius: 2px;
+		}
+		p, ul {
+			max-width: 640px;
+		}
+		.banner {
+			width: 100vw;
+			height: 25vw;
+		}
+		.inner {
+			max-width: 960px;
+			padding: 20px 8px;
+			margin: auto;
+		}
+		h1, h2 {
+			margin-bottom: 0;
+		}
+		h1 {
+			border-bottom: 2px currentColor solid;
+			margin-top: 0;
+		}
+		h2 {
+			margin-top: 0;
+		}
+		.pad {
+			padding-top: 24px;
+		}
+		a:any-link {
+			color: #64FFDA;
+		}
+		.media {
+			width: 854px;
+			height: 480px;
+			max-width: calc(100vw - 64px);
+			max-height: calc((100vw - 64px) * (9 / 16));
+			box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.5);
+		}
+		.indent {
+			padding-left: 24px;
+			padding-right: 24px;
+		}
+		.sides-either {
+			color: #5FF;
+		}
+		.sides-client_only {
+			color: #FA0;
+		}
+		.sides-server_only {
+			color: #F5F;
+		}
+		.sides-server_and_client {
+			color: #F55;
+		}
+		.sides-server_only_with_client_helper {
+			color: #5F5;
+		}
+		#sidebar-toc {
+			display: none;
+		}
+		.tocent {
+			background-image: linear-gradient(to right, #FFF3, #FFF0);
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			background-size: 0px 100%;
+			padding: 2px;
+			transition: background-size 0.6s;
+		}
+		li.tocent {
+			padding-left: 4px;
+			list-style-position: inside;
+		}
+		.active {
+			background-size: 300px 100%;
+		}
+		ul {
+			padding-left: 20px;
+		}
+		del {
+			color: #607D8B;
+		}
+		@media(max-width: 960px) {
+			.indent {
+				padding-left: 12px;
+				padding-right: 12px;
+			}
+			.media {
+				max-width: calc(100vw - 40px);
+				max-height: calc((100vw - 40px) * (9 / 16));
+			}
+		}
+		@media(min-width: 1280px) {
+			.yescript #toc {
+				display: none;
+			}
+			.yescript #sidebar-toc {
+				display: block;
+				position: absolute;
+				top: calc(25vw + 8px);
+				left: 8px;
+				max-height: calc(100vh - (25vw + 8px));
+				overflow-y: auto;
+				width: calc(100% - 1056px);
+			}
+			#sidebar-toc.fixed {
+				position: fixed;
+				top: 8px;
+				max-height: 100vh;
+			}
+			.yescript .inner {
+				margin-left: auto;
+				margin-right: 64px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<a name="intro"></a>
+	<img class="banner" src="https://falsehoodmc.github.io/banner.svg?v=2"/>
+	<div id="sidebar-toc">
+	<ul style="margin: 0; padding-left: 0">
+		<li id="intro-tocent" class="tocent"><a href="#intro">Introduction</a></li>
+		<li id="faq-tocent" class="tocent"><a href="#faq">FAQ</a></li>
+	</ul>
+	<details>
+		<summary id="meta-tocent" class="tocent"><a href="#meta">Meta</a></summary>
+		<ul style="margin: 0">
+			<li id="config_screen-tocent" class="tocent"><a href="#config_screen">Config Screen</a></li>
+			<li id="config_command-tocent" class="tocent"><a href="#config_command">Config Command</a></li>
+			<li id="block_distribution_analysis-tocent" class="tocent"><a href="#block_distribution_analysis">Block Distribution Analysis</a></li>
+			<li id="atlas_viewer-tocent" class="tocent"><a href="#atlas_viewer">Atlas Viewer</a></li>
+			<li id="search-tocent" class="tocent"><a href="#search">Search</a></li>
+		</ul>
+	</details>
+	<details>
+		<summary id="general-tocent" class="tocent"><a href="#general">General</a></summary>
+		<ul style="margin: 0">
+			<li id="general.dark_mode-tocent" class="tocent"><a href="#general.dark_mode">Dark Mode</a></li>
+			<li id="general.data_upload-tocent" class="tocent"><a href="#general.data_upload">Data Upload</a></li>
+			<li id="general.profile-tocent" class="tocent"><a href="#general.profile">Profile</a></li>
+			<li id="general.reduced_motion-tocent" class="tocent"><a href="#general.reduced_motion">Reduced Motion</a></li>
+		</ul>
+	</details>
+	<details>
+		<summary id="fixes-tocent" class="tocent"><a href="#fixes">Fixes</a></summary>
+		<ul style="margin: 0">
+			<li id="fixes.adventure_tags_in_survival-tocent" class="tocent"><a href="#fixes.adventure_tags_in_survival">Adventure Tags In Survival</a></li>
+			<li id="fixes.better_pause_freezing-tocent" class="tocent"><a href="#fixes.better_pause_freezing">Better Pause Freezing</a></li>
+			<li id="fixes.boundless_levels-tocent" class="tocent"><a href="#fixes.boundless_levels">Boundless Levels</a></li>
+			<li id="fixes.colored_crack_particles-tocent" class="tocent"><a href="#fixes.colored_crack_particles">Colored Crack Particles</a></li>
+			<li id="fixes.fix_charm_amethyst_dupe-tocent" class="tocent"><a href="#fixes.fix_charm_amethyst_dupe">Fix Charm Amethyst Dupe</a></li>
+			<li id="fixes.fix_superflat_bad_structures-tocent" class="tocent"><a href="#fixes.fix_superflat_bad_structures">Fix Superflat Bad Structures</a></li>
+			<li id="fixes.furnace_minecart_pushing-tocent" class="tocent"><a href="#fixes.furnace_minecart_pushing">Furnace Minecart Pushing</a></li>
+			<li id="fixes.ghast_charging-tocent" class="tocent"><a href="#fixes.ghast_charging">Ghast Charging</a></li>
+			<li id="fixes.inanimates_can_be_invisible-tocent" class="tocent"><a href="#fixes.inanimates_can_be_invisible">Inanimates Can Be Invisible</a></li>
+			<li id="fixes.multiline_sign_paste-tocent" class="tocent"><a href="#fixes.multiline_sign_paste">Multiline Sign Paste</a></li>
+			<li id="fixes.no_night_vision_flash-tocent" class="tocent"><a href="#fixes.no_night_vision_flash">No Night Vision Flashing</a></li>
+			<li id="fixes.omniscent_player-tocent" class="tocent"><a href="#fixes.omniscent_player">Omniscent Player</a></li>
+			<li id="fixes.open_inventories_in_nether_portal-tocent" class="tocent"><a href="#fixes.open_inventories_in_nether_portal">Open Inventories in Nether Portals</a></li>
+			<li id="fixes.silverfish_step-tocent" class="tocent"><a href="#fixes.silverfish_step">Silverfish Step</a></li>
+			<li id="fixes.stable_cacti-tocent" class="tocent"><a href="#fixes.stable_cacti">Stable Cacti</a></li>
+			<li id="fixes.sync_attacker_yaw-tocent" class="tocent"><a href="#fixes.sync_attacker_yaw">Sync Attacker Yaw</a></li>
+			<li id="fixes.uncap_menu_fps-tocent" class="tocent"><a href="#fixes.uncap_menu_fps">Uncap Menu FPS</a></li>
+			<li id="fixes.use_player_list_name_in_tag-tocent" class="tocent"><a href="#fixes.use_player_list_name_in_tag">Use Player List Name In Tag</a></li>
+		</ul>
+	</details>
+	<details>
+		<summary id="utility-tocent" class="tocent"><a href="#utility">Utility</a></summary>
+		<ul style="margin: 0">
+			<li id="utility.books_show_enchants-tocent" class="tocent"><a href="#utility.books_show_enchants">Books Show Enchants</a></li>
+			<li id="utility.canhit-tocent" class="tocent"><a href="#utility.canhit">CanHit</a></li>
+			<li id="utility.despawning_items_blink-tocent" class="tocent"><a href="#utility.despawning_items_blink">Despawning Items Blink</a></li>
+			<li id="utility.hide_armor-tocent" class="tocent"><a href="#utility.hide_armor">Hide Armor</a></li>
+			<li id="utility.i_and_more-tocent" class="tocent"><a href="#utility.i_and_more">/i And More</a></li>
+			<li id="utility.item_despawn-tocent" class="tocent"><a href="#utility.item_despawn">Item Despawn Control</a></li>
+			<li id="utility.killmessage-tocent" class="tocent"><a href="#utility.killmessage">KillMessage</a></li>
+			<li id="utility.legacy_command_syntax-tocent" class="tocent"><a href="#utility.legacy_command_syntax">Legacy Command Syntax</a></li>
+			<li id="utility.mob_ids-tocent" class="tocent"><a href="#utility.mob_ids">Mob IDs</a></li>
+			<li id="utility.mods_command-tocent" class="tocent"><a href="#utility.mods_command">/mods Command</a></li>
+			<li id="utility.ping_privacy-tocent" class="tocent"><a href="#utility.ping_privacy">Ping Privacy</a></li>
+			<li id="utility.show_bee_count_on_item-tocent" class="tocent"><a href="#utility.show_bee_count_on_item">Show Bee Count</a></li>
+			<li id="utility.show_bee_count_tooltip-tocent" class="tocent"><a href="#utility.show_bee_count_tooltip">Show Bee Count</a></li>
+			<li id="utility.show_map_id-tocent" class="tocent"><a href="#utility.show_map_id">Show Map ID</a></li>
+			<li id="utility.taggable_players-tocent" class="tocent"><a href="#utility.taggable_players">Taggable Players</a></li>
+			<li id="utility.toggle_sprint-tocent" class="tocent"><a href="#utility.toggle_sprint">Toggle Sprint</a></li>
+			<li id="utility.toggle_stance-tocent" class="tocent"><a href="#utility.toggle_stance">Toggle Stance</a></li>
+			<li id="utility.tools_show_important_enchant-tocent" class="tocent"><a href="#utility.tools_show_important_enchant">Tools Show Important Enchant</a></li>
+			<li id="utility.yeet_recipes-tocent" class="tocent"><a href="#utility.yeet_recipes">Yeet Recipes</a></li>
+		</ul>
+	</details>
+	<details>
+		<summary id="tweaks-tocent" class="tocent"><a href="#tweaks">Tweaks</a></summary>
+		<ul style="margin: 0">
+			<li id="tweaks.alt_absorption_sound-tocent" class="tocent"><a href="#tweaks.alt_absorption_sound">Alt Absorption Sound</a></li>
+			<li id="tweaks.arrows_work_in_water-tocent" class="tocent"><a href="#tweaks.arrows_work_in_water">Arrows Work In Water</a></li>
+			<li id="tweaks.bush_walk_doesnt_hurt_with_armor-tocent" class="tocent"><a href="#tweaks.bush_walk_doesnt_hurt_with_armor">Bush Walk Doesn&#x27;t Hurt With Armor</a></li>
+			<li id="tweaks.cactus_brush_doesnt_hurt_with_chest-tocent" class="tocent"><a href="#tweaks.cactus_brush_doesnt_hurt_with_chest">Cactus Brush Doesn&#x27;t Hurt With Chest</a></li>
+			<li id="tweaks.cactus_walk_doesnt_hurt_with_boots-tocent" class="tocent"><a href="#tweaks.cactus_walk_doesnt_hurt_with_boots">Cactus Walk Doesn&#x27;t Hurt With Boots</a></li>
+			<li id="tweaks.campfires_cook_entities-tocent" class="tocent"><a href="#tweaks.campfires_cook_entities">Campfires Cook Entities</a></li>
+			<li id="tweaks.campfires_ignite_entities-tocent" class="tocent"><a href="#tweaks.campfires_ignite_entities">Campfires Ignite Entities</a></li>
+			<li id="tweaks.campfires_place_unlit-tocent" class="tocent"><a href="#tweaks.campfires_place_unlit">Campfires Place Unlit</a></li>
+			<li id="tweaks.cracking_spawn_eggs-tocent" class="tocent"><a href="#tweaks.cracking_spawn_eggs">Cracking Spawn Eggs</a></li>
+			<li id="tweaks.feather_falling_no_trample-tocent" class="tocent"><a href="#tweaks.feather_falling_no_trample">Feather Falling No Trample</a></li>
+			<li id="tweaks.flammable_cobwebs-tocent" class="tocent"><a href="#tweaks.flammable_cobwebs">Flammable Cobwebs</a></li>
+			<li id="tweaks.fullres_banner_shields-tocent" class="tocent"><a href="#tweaks.fullres_banner_shields">Fullres Banner Shields</a></li>
+			<li id="tweaks.ghast_panic-tocent" class="tocent"><a href="#tweaks.ghast_panic">Ghast Panic</a></li>
+			<li id="tweaks.legible_signs-tocent" class="tocent"><a href="#tweaks.legible_signs">Legible Signs</a></li>
+			<li id="tweaks.less_annoying_fire-tocent" class="tocent"><a href="#tweaks.less_annoying_fire">Less Annoying Fire</a></li>
+			<li id="tweaks.less_restrictive_note_blocks-tocent" class="tocent"><a href="#tweaks.less_restrictive_note_blocks">Less Restrictive Note Blocks</a></li>
+			<li id="tweaks.long_levelup_sound_at_30-tocent" class="tocent"><a href="#tweaks.long_levelup_sound_at_30">Long Level Up Sound At 30</a></li>
+			<li id="tweaks.nether_cauldron-tocent" class="tocent"><a href="#tweaks.nether_cauldron">Nether Cauldron</a></li>
+			<li id="tweaks.no_dinnerlava-tocent" class="tocent"><a href="#tweaks.no_dinnerlava">No Dinnerlava</a></li>
+			<li id="tweaks.no_sneak_bypass-tocent" class="tocent"><a href="#tweaks.no_sneak_bypass">No Sneak Bypass</a></li>
+			<li id="tweaks.normal_fog_with_night_vision-tocent" class="tocent"><a href="#tweaks.normal_fog_with_night_vision">Normal Fog With Night Vision</a></li>
+			<li id="tweaks.play_note_blocks_in_creative-tocent" class="tocent"><a href="#tweaks.play_note_blocks_in_creative">Play Note Blocks In Creative</a></li>
+			<li id="tweaks.rainbow_experience-tocent" class="tocent"><a href="#tweaks.rainbow_experience">Rainbow Experience</a></li>
+			<li id="tweaks.recipe_book_auto_craft-tocent" class="tocent"><a href="#tweaks.recipe_book_auto_craft">Recipe Book Auto Craft</a></li>
+			<li id="tweaks.reverse_note_block_tuning-tocent" class="tocent"><a href="#tweaks.reverse_note_block_tuning">Reverse Note Block Tuning</a></li>
+			<li id="tweaks.see_items_while_riding-tocent" class="tocent"><a href="#tweaks.see_items_while_riding">See Held Items While Riding</a></li>
+			<li id="tweaks.shulker_bullets_despawn_on_death-tocent" class="tocent"><a href="#tweaks.shulker_bullets_despawn_on_death">Shulker Bullets Despawn On Death</a></li>
+			<li id="tweaks.silent_minecarts-tocent" class="tocent"><a href="#tweaks.silent_minecarts">Silent Minecarts</a></li>
+			<li id="tweaks.tridents_in_void_return-tocent" class="tocent"><a href="#tweaks.tridents_in_void_return">Tridents In Void Return</a></li>
+		</ul>
+	</details>
+	<details>
+		<summary id="minor_mechanics-tocent" class="tocent"><a href="#minor_mechanics">Minor Mechanics</a></summary>
+		<ul style="margin: 0">
+			<li id="minor_mechanics.cactus_punching_hurts-tocent" class="tocent"><a href="#minor_mechanics.cactus_punching_hurts">Cactus Punching Hurts</a></li>
+			<li id="minor_mechanics.crawling-tocent" class="tocent"><a href="#minor_mechanics.crawling">Crawling</a></li>
+			<li id="minor_mechanics.exact_note_block_tuning-tocent" class="tocent"><a href="#minor_mechanics.exact_note_block_tuning">Exact Note Block Tuning</a></li>
+			<li id="minor_mechanics.feather_falling_five-tocent" class="tocent"><a href="#minor_mechanics.feather_falling_five">Feather Falling V</a></li>
+			<li id="minor_mechanics.feather_falling_five_damages_boots-tocent" class="tocent"><a href="#minor_mechanics.feather_falling_five_damages_boots">Feather Falling V Damages Boots</a></li>
+			<li id="minor_mechanics.fire_aspect_is_flint_and_steel-tocent" class="tocent"><a href="#minor_mechanics.fire_aspect_is_flint_and_steel">Fire Aspect Is Flint And Steel</a></li>
+			<li id="minor_mechanics.fire_protection_on_any_item-tocent" class="tocent"><a href="#minor_mechanics.fire_protection_on_any_item">Fire Protection On Any Item</a></li>
+			<li id="minor_mechanics.furnace_minecart_any_fuel-tocent" class="tocent"><a href="#minor_mechanics.furnace_minecart_any_fuel">Furnace Minecart Accepts Any Fuel</a></li>
+			<li id="minor_mechanics.infibows-tocent" class="tocent"><a href="#minor_mechanics.infibows">InfiBows</a></li>
+			<li id="minor_mechanics.invisibility_splash_on_inanimates-tocent" class="tocent"><a href="#minor_mechanics.invisibility_splash_on_inanimates">Invisibility Splash On Inanimates</a></li>
+			<li id="minor_mechanics.mechanism_muffling-tocent" class="tocent"><a href="#minor_mechanics.mechanism_muffling">Mechanism Muffling</a></li>
+			<li id="minor_mechanics.note_block_notes-tocent" class="tocent"><a href="#minor_mechanics.note_block_notes">Note Block Notes</a></li>
+			<li id="minor_mechanics.note_blocks_play_on_landing-tocent" class="tocent"><a href="#minor_mechanics.note_blocks_play_on_landing">Note Blocks Play On Landing</a></li>
+			<li id="minor_mechanics.observers_see_entities-tocent" class="tocent"><a href="#minor_mechanics.observers_see_entities">Observers See Entities</a></li>
+			<li id="minor_mechanics.observers_see_entities_living_only-tocent" class="tocent"><a href="#minor_mechanics.observers_see_entities_living_only">Observers See Entities - Living Only</a></li>
+			<li id="minor_mechanics.spiders_cant_climb_glazed_terracotta-tocent" class="tocent"><a href="#minor_mechanics.spiders_cant_climb_glazed_terracotta">Spiders Can&#x27;t Climb Glazed Terracotta</a></li>
+			<li id="minor_mechanics.spiders_cant_climb_while_wet-tocent" class="tocent"><a href="#minor_mechanics.spiders_cant_climb_while_wet">Spiders Can&#x27;t Climb While Wet</a></li>
+			<li id="minor_mechanics.tridents_activate_levers-tocent" class="tocent"><a href="#minor_mechanics.tridents_activate_levers">Tridents Activate Levers</a></li>
+			<li id="minor_mechanics.unsaddle_creatures-tocent" class="tocent"><a href="#minor_mechanics.unsaddle_creatures">Unsaddle Creatures</a></li>
+			<li id="minor_mechanics.water_fills_on_break-tocent" class="tocent"><a href="#minor_mechanics.water_fills_on_break">Water Fills On Break</a></li>
+		</ul>
+	</details>
+	<details>
+		<summary id="mechanics-tocent" class="tocent"><a href="#mechanics">Mechanics</a></summary>
+		<ul style="margin: 0">
+			<li id="mechanics.anvil_repair-tocent" class="tocent"><a href="#mechanics.anvil_repair">Anvil Repair</a></li>
+			<li id="mechanics.bottled_air-tocent" class="tocent"><a href="#mechanics.bottled_air">Bottled Air</a></li>
+			<li id="mechanics.broken_tools_drop_components-tocent" class="tocent"><a href="#mechanics.broken_tools_drop_components">Broken Gear Drops Components</a></li>
+			<li id="mechanics.enhanced_moistness-tocent" class="tocent"><a href="#mechanics.enhanced_moistness">Enhanced Moistness</a></li>
+			<li id="mechanics.grindstone_disenchanting-tocent" class="tocent"><a href="#mechanics.grindstone_disenchanting">Grindstone Disenchanting</a></li>
+			<li id="mechanics.obsidian_tears-tocent" class="tocent"><a href="#mechanics.obsidian_tears">Obsidian Tears</a></li>
+			<li id="mechanics.pursurvers-tocent" class="tocent"><a href="#mechanics.pursurvers">Pursurvers</a></li>
+			<li id="mechanics.slowfall_splash_on_inanimates-tocent" class="tocent"><a href="#mechanics.slowfall_splash_on_inanimates">Slow Fall Splash On Inanimates</a></li>
+		</ul>
+	</details>
+	<details>
+		<summary id="balance-tocent" class="tocent"><a href="#balance">Balance</a></summary>
+		<ul style="margin: 0">
+			<li id="balance.anvil_damage_only_on_fall-tocent" class="tocent"><a href="#balance.anvil_damage_only_on_fall">Anvils Take Damage Only When Falling</a></li>
+			<li id="balance.anvil_full_repair-tocent" class="tocent"><a href="#balance.anvil_full_repair">Anvil Fully Repairs</a></li>
+			<li id="balance.anvil_rename_always_costs_one-tocent" class="tocent"><a href="#balance.anvil_rename_always_costs_one">Anvil Rename Always Costs One</a></li>
+			<li id="balance.bedrock_impaling-tocent" class="tocent"><a href="#balance.bedrock_impaling">Bedrock-Like Impaling</a></li>
+			<li id="balance.disable_elytra_boost-tocent" class="tocent"><a href="#balance.disable_elytra_boost">Disable Elytra Boost</a></li>
+			<li id="balance.disable_mending-tocent" class="tocent"><a href="#balance.disable_mending">Disable Mending</a></li>
+			<li id="balance.disable_mending_trade-tocent" class="tocent"><a href="#balance.disable_mending_trade">Disable Mending Trade</a></li>
+			<li id="balance.disable_pearl_stasis-tocent" class="tocent"><a href="#balance.disable_pearl_stasis">Disable Storing Thrown Ender Pearls</a></li>
+			<li id="balance.disable_prior_work_penalty-tocent" class="tocent"><a href="#balance.disable_prior_work_penalty">Disable Prior Work Penalty</a></li>
+			<li id="balance.drop_more_exp_on_death-tocent" class="tocent"><a href="#balance.drop_more_exp_on_death">Drop More Experience On Death</a></li>
+			<li id="balance.ender_dragon_always_spawn_egg-tocent" class="tocent"><a href="#balance.ender_dragon_always_spawn_egg">Ender Dragon Always Spawns Dragon Egg</a></li>
+			<li id="balance.ender_dragon_full_xp-tocent" class="tocent"><a href="#balance.ender_dragon_full_xp">Full Ender Dragon XP</a></li>
+			<li id="balance.environmentally_friendly_creepers-tocent" class="tocent"><a href="#balance.environmentally_friendly_creepers">Environmentally Friendly Creepers</a></li>
+			<li id="balance.faster_obsidian-tocent" class="tocent"><a href="#balance.faster_obsidian">Faster Obsidian</a></li>
+			<li id="balance.food_always_edible-tocent" class="tocent"><a href="#balance.food_always_edible">Food Always Edible</a></li>
+			<li id="balance.hyperspeed_furnace_minecart-tocent" class="tocent"><a href="#balance.hyperspeed_furnace_minecart">Hyperspeed Furnace Minecart</a></li>
+			<li id="balance.infinity_crossbows-tocent" class="tocent"><a href="#balance.infinity_crossbows">Infinity Crossbows</a></li>
+			<li id="balance.infinity_mending-tocent" class="tocent"><a href="#balance.infinity_mending">Infinity &amp; Mending</a></li>
+			<li id="balance.loading_furnace_minecart-tocent" class="tocent"><a href="#balance.loading_furnace_minecart">ChunkLoading Furnace Minecart</a></li>
+			<li id="balance.mobs_dont_drop_ingots-tocent" class="tocent"><a href="#balance.mobs_dont_drop_ingots">Mobs Drop Less Metal</a></li>
+			<li id="balance.pickup_skeleton_arrows-tocent" class="tocent"><a href="#balance.pickup_skeleton_arrows">Pickup Skeleton Arrows</a></li>
+			<li id="balance.soul_speed_doesnt_damage_boots-tocent" class="tocent"><a href="#balance.soul_speed_doesnt_damage_boots">Soul Speed Doesn&#x27;t Damage Boots</a></li>
+			<li id="balance.spawners_always_tick-tocent" class="tocent"><a href="#balance.spawners_always_tick">Spawners Always Tick</a></li>
+			<li id="balance.tridents_accept_power-tocent" class="tocent"><a href="#balance.tridents_accept_power">Tridents Accept Power</a></li>
+			<li id="balance.tridents_accept_sharpness-tocent" class="tocent"><a href="#balance.tridents_accept_sharpness">Tridents Accept Sharpness</a></li>
+		</ul>
+	</details>
+	<details>
+		<summary id="weird_tweaks-tocent" class="tocent"><a href="#weird_tweaks">Weird Tweaks</a></summary>
+		<ul style="margin: 0">
+			<li id="weird_tweaks.blaze_fertilizer-tocent" class="tocent"><a href="#weird_tweaks.blaze_fertilizer">Blaze Powder Grows Nether Wart</a></li>
+			<li id="weird_tweaks.creepers_explode_when_on_fire-tocent" class="tocent"><a href="#weird_tweaks.creepers_explode_when_on_fire">Creepers Explode When On Fire</a></li>
+			<li id="weird_tweaks.dimensional_tools-tocent" class="tocent"><a href="#weird_tweaks.dimensional_tools">Dimensional Tools</a></li>
+			<li id="weird_tweaks.disable_equip_sound-tocent" class="tocent"><a href="#weird_tweaks.disable_equip_sound">Disable Equip Sound</a></li>
+			<li id="weird_tweaks.disable_nether_fog-tocent" class="tocent"><a href="#weird_tweaks.disable_nether_fog">Disable Nether Fog</a></li>
+			<li id="weird_tweaks.disable_night_skip-tocent" class="tocent"><a href="#weird_tweaks.disable_night_skip">Disable Night Skip</a></li>
+			<li id="weird_tweaks.drop_exp_with_keep_inventory-tocent" class="tocent"><a href="#weird_tweaks.drop_exp_with_keep_inventory">Drop Experience With keepInventory</a></li>
+			<li id="weird_tweaks.endermen_dont_grief-tocent" class="tocent"><a href="#weird_tweaks.endermen_dont_grief">Endermen Don&#x27;t Grief</a></li>
+			<li id="weird_tweaks.endermen_dont_squeal-tocent" class="tocent"><a href="#weird_tweaks.endermen_dont_squeal">Endermen Don&#x27;t Squeal</a></li>
+			<li id="weird_tweaks.instant_pickup-tocent" class="tocent"><a href="#weird_tweaks.instant_pickup">Instant Pickup</a></li>
+			<li id="weird_tweaks.item_safe_cactus-tocent" class="tocent"><a href="#weird_tweaks.item_safe_cactus">Item Safe Cactus</a></li>
+			<li id="weird_tweaks.leaves_grow_grass-tocent" class="tocent"><a href="#weird_tweaks.leaves_grow_grass">Leaves Grow Grass</a></li>
+			<li id="weird_tweaks.photoallergic_creepers-tocent" class="tocent"><a href="#weird_tweaks.photoallergic_creepers">Photoallergic Creepers</a></li>
+			<li id="weird_tweaks.photoresistant_mobs-tocent" class="tocent"><a href="#weird_tweaks.photoresistant_mobs">Photoresistant Mobs</a></li>
+			<li id="weird_tweaks.repelling_void-tocent" class="tocent"><a href="#weird_tweaks.repelling_void">Déjà Void</a></li>
+			<li id="weird_tweaks.underwater_explosions-tocent" class="tocent"><a href="#weird_tweaks.underwater_explosions">Underwater Explosions</a></li>
+			<li id="weird_tweaks.use_items_while_riding-tocent" class="tocent"><a href="#weird_tweaks.use_items_while_riding">Use Items While Riding</a></li>
+			<li id="weird_tweaks.villagers_follow_emerald_blocks-tocent" class="tocent"><a href="#weird_tweaks.villagers_follow_emerald_blocks">Villagers Follow Emerald Blocks</a></li>
+		</ul>
+	</details>
+	<details>
+		<summary id="woina-tocent" class="tocent"><a href="#woina">What&#x27;s Old Is New Again</a></summary>
+		<ul style="margin: 0">
+			<li id="woina.billboard_drops-tocent" class="tocent"><a href="#woina.billboard_drops">Billboard Drops</a></li>
+			<li id="woina.blinking_drops-tocent" class="tocent"><a href="#woina.blinking_drops">Blinking Drops</a></li>
+			<li id="woina.block_logo-tocent" class="tocent"><a href="#woina.block_logo">Block Logo</a></li>
+			<li id="woina.classic_block_drops-tocent" class="tocent"><a href="#woina.classic_block_drops">Classic Block Drops</a></li>
+			<li id="woina.dirt_screen-tocent" class="tocent"><a href="#woina.dirt_screen">Dirt Screen</a></li>
+			<li id="woina.dropped_items_dont_stack-tocent" class="tocent"><a href="#woina.dropped_items_dont_stack">Dropped Items Don&#x27;t Stack</a></li>
+			<li id="woina.flat_items-tocent" class="tocent"><a href="#woina.flat_items">Flat Items</a></li>
+			<li id="woina.instant_bow-tocent" class="tocent"><a href="#woina.instant_bow">Instant Bow</a></li>
+			<li id="woina.instant_eat-tocent" class="tocent"><a href="#woina.instant_eat">Instant Eat</a></li>
+			<li id="woina.janky_arm-tocent" class="tocent"><a href="#woina.janky_arm">Janky Arm</a></li>
+			<li id="woina.no_experience-tocent" class="tocent"><a href="#woina.no_experience">No Experience</a></li>
+			<li id="woina.no_hand_sway-tocent" class="tocent"><a href="#woina.no_hand_sway">No Hand Sway</a></li>
+			<li id="woina.no_sprint-tocent" class="tocent"><a href="#woina.no_sprint">No Sprint</a></li>
+			<li id="woina.old_lava-tocent" class="tocent"><a href="#woina.old_lava">Old Lava</a></li>
+			<li id="woina.old_sheep_shear-tocent" class="tocent"><a href="#woina.old_sheep_shear">Old Sheep Shear</a></li>
+			<li id="woina.old_tooltip-tocent" class="tocent"><a href="#woina.old_tooltip">Old Tooltip</a></li>
+			<li id="woina.oof-tocent" class="tocent"><a href="#woina.oof">Oof</a></li>
+		</ul>
+	</details>
+	<details>
+		<summary id="pedantry-tocent" class="tocent"><a href="#pedantry">Pedantry</a></summary>
+		<ul style="margin: 0">
+			<li id="pedantry.oak_is_apple-tocent" class="tocent"><a href="#pedantry.oak_is_apple">Oak Is Apple</a></li>
+			<li id="pedantry.tnt_is_dynamite-tocent" class="tocent"><a href="#pedantry.tnt_is_dynamite">TNT Is Dynamite</a></li>
+		</ul>
+	</details>
+	<details>
+		<summary id="situational-tocent" class="tocent"><a href="#situational">Situational</a></summary>
+		<ul style="margin: 0">
+			<li id="situational.all_damage_is_fatal-tocent" class="tocent"><a href="#situational.all_damage_is_fatal">All Damage Is Fatal</a></li>
+			<li id="situational.disable_bees-tocent" class="tocent"><a href="#situational.disable_bees">Disable Bees</a></li>
+			<li id="situational.disable_elytra-tocent" class="tocent"><a href="#situational.disable_elytra">Disable Elytra</a></li>
+			<li id="situational.disable_villagers-tocent" class="tocent"><a href="#situational.disable_villagers">Disable Villagers</a></li>
+			<li id="situational.item_frame_no_name_display-tocent" class="tocent"><a href="#situational.item_frame_no_name_display">Item Frames Don&#x27;t Display Name Tags</a></li>
+			<li id="situational.player_free_spawners-tocent" class="tocent"><a href="#situational.player_free_spawners">Player Free Spawners</a></li>
+			<li id="situational.static_dragon_egg-tocent" class="tocent"><a href="#situational.static_dragon_egg">Static Dragon Egg</a></li>
+			<li id="situational.weapons_accept_silk-tocent" class="tocent"><a href="#situational.weapons_accept_silk">Weapons Accept Silk</a></li>
+		</ul>
+	</details>
+	<details>
+		<summary id="experiments-tocent" class="tocent"><a href="#experiments">Experiments</a></summary>
+		<ul style="margin: 0">
+			<li id="experiments.no_set_window_pos-tocent" class="tocent"><a href="#experiments.no_set_window_pos">No Set Window Pos</a></li>
+			<li id="experiments.packed_atlases-tocent" class="tocent"><a href="#experiments.packed_atlases">Packed Atlases</a></li>
+		</ul>
+	</details>
+	</div>
+	<script>
+		document.body.classList.add('yescript');
+		let banner = document.querySelector('.banner');
+		let toc = document.querySelector('#sidebar-toc');
+		let keys = [
+			"intro", "faq", "meta", "config_screen", "config_command", "block_distribution_analysis", "atlas_viewer", "search", "general", "general.dark_mode", "general.data_upload", "general.profile", "general.reduced_motion", "fixes", "fixes.adventure_tags_in_survival", "fixes.better_pause_freezing", "fixes.boundless_levels", "fixes.colored_crack_particles", "fixes.fix_charm_amethyst_dupe", "fixes.fix_superflat_bad_structures", "fixes.furnace_minecart_pushing", "fixes.ghast_charging", "fixes.inanimates_can_be_invisible", "fixes.multiline_sign_paste", "fixes.no_night_vision_flash", "fixes.omniscent_player", "fixes.open_inventories_in_nether_portal", "fixes.silverfish_step", "fixes.stable_cacti", "fixes.sync_attacker_yaw", "fixes.uncap_menu_fps", "fixes.use_player_list_name_in_tag", "utility", "utility.books_show_enchants", "utility.canhit", "utility.despawning_items_blink", "utility.hide_armor", "utility.i_and_more", "utility.item_despawn", "utility.killmessage", "utility.legacy_command_syntax", "utility.mob_ids", "utility.mods_command", "utility.ping_privacy", "utility.show_bee_count_on_item", "utility.show_bee_count_tooltip", "utility.show_map_id", "utility.taggable_players", "utility.toggle_sprint", "utility.toggle_stance", "utility.tools_show_important_enchant", "utility.yeet_recipes", "tweaks", "tweaks.alt_absorption_sound", "tweaks.arrows_work_in_water", "tweaks.bush_walk_doesnt_hurt_with_armor", "tweaks.cactus_brush_doesnt_hurt_with_chest", "tweaks.cactus_walk_doesnt_hurt_with_boots", "tweaks.campfires_cook_entities", "tweaks.campfires_ignite_entities", "tweaks.campfires_place_unlit", "tweaks.cracking_spawn_eggs", "tweaks.feather_falling_no_trample", "tweaks.flammable_cobwebs", "tweaks.fullres_banner_shields", "tweaks.ghast_panic", "tweaks.legible_signs", "tweaks.less_annoying_fire", "tweaks.less_restrictive_note_blocks", "tweaks.long_levelup_sound_at_30", "tweaks.nether_cauldron", "tweaks.no_dinnerlava", "tweaks.no_sneak_bypass", "tweaks.normal_fog_with_night_vision", "tweaks.play_note_blocks_in_creative", "tweaks.rainbow_experience", "tweaks.recipe_book_auto_craft", "tweaks.reverse_note_block_tuning", "tweaks.see_items_while_riding", "tweaks.shulker_bullets_despawn_on_death", "tweaks.silent_minecarts", "tweaks.tridents_in_void_return", "minor_mechanics", "minor_mechanics.cactus_punching_hurts", "minor_mechanics.crawling", "minor_mechanics.exact_note_block_tuning", "minor_mechanics.feather_falling_five", "minor_mechanics.feather_falling_five_damages_boots", "minor_mechanics.fire_aspect_is_flint_and_steel", "minor_mechanics.fire_protection_on_any_item", "minor_mechanics.furnace_minecart_any_fuel", "minor_mechanics.infibows", "minor_mechanics.invisibility_splash_on_inanimates", "minor_mechanics.mechanism_muffling", "minor_mechanics.note_block_notes", "minor_mechanics.note_blocks_play_on_landing", "minor_mechanics.observers_see_entities", "minor_mechanics.observers_see_entities_living_only", "minor_mechanics.spiders_cant_climb_glazed_terracotta", "minor_mechanics.spiders_cant_climb_while_wet", "minor_mechanics.tridents_activate_levers", "minor_mechanics.unsaddle_creatures", "minor_mechanics.water_fills_on_break", "mechanics", "mechanics.anvil_repair", "mechanics.bottled_air", "mechanics.broken_tools_drop_components", "mechanics.enhanced_moistness", "mechanics.grindstone_disenchanting", "mechanics.obsidian_tears", "mechanics.pursurvers", "mechanics.slowfall_splash_on_inanimates", "balance", "balance.anvil_damage_only_on_fall", "balance.anvil_full_repair", "balance.anvil_rename_always_costs_one", "balance.bedrock_impaling", "balance.disable_elytra_boost", "balance.disable_mending", "balance.disable_mending_trade", "balance.disable_pearl_stasis", "balance.disable_prior_work_penalty", "balance.drop_more_exp_on_death", "balance.ender_dragon_always_spawn_egg", "balance.ender_dragon_full_xp", "balance.environmentally_friendly_creepers", "balance.faster_obsidian", "balance.food_always_edible", "balance.hyperspeed_furnace_minecart", "balance.infinity_crossbows", "balance.infinity_mending", "balance.loading_furnace_minecart", "balance.mobs_dont_drop_ingots", "balance.pickup_skeleton_arrows", "balance.soul_speed_doesnt_damage_boots", "balance.spawners_always_tick", "balance.tridents_accept_power", "balance.tridents_accept_sharpness", "weird_tweaks", "weird_tweaks.blaze_fertilizer", "weird_tweaks.creepers_explode_when_on_fire", "weird_tweaks.dimensional_tools", "weird_tweaks.disable_equip_sound", "weird_tweaks.disable_nether_fog", "weird_tweaks.disable_night_skip", "weird_tweaks.drop_exp_with_keep_inventory", "weird_tweaks.endermen_dont_grief", "weird_tweaks.endermen_dont_squeal", "weird_tweaks.instant_pickup", "weird_tweaks.item_safe_cactus", "weird_tweaks.leaves_grow_grass", "weird_tweaks.photoallergic_creepers", "weird_tweaks.photoresistant_mobs", "weird_tweaks.repelling_void", "weird_tweaks.underwater_explosions", "weird_tweaks.use_items_while_riding", "weird_tweaks.villagers_follow_emerald_blocks", "woina", "woina.billboard_drops", "woina.blinking_drops", "woina.block_logo", "woina.classic_block_drops", "woina.dirt_screen", "woina.dropped_items_dont_stack", "woina.flat_items", "woina.instant_bow", "woina.instant_eat", "woina.janky_arm", "woina.no_experience", "woina.no_hand_sway", "woina.no_sprint", "woina.old_lava", "woina.old_sheep_shear", "woina.old_tooltip", "woina.oof", "pedantry", "pedantry.oak_is_apple", "pedantry.tnt_is_dynamite", "situational", "situational.all_damage_is_fatal", "situational.disable_bees", "situational.disable_elytra", "situational.disable_villagers", "situational.item_frame_no_name_display", "situational.player_free_spawners", "situational.static_dragon_egg", "situational.weapons_accept_silk", "experiments", "experiments.no_set_window_pos", "experiments.packed_atlases", 
+		];
+		document.addEventListener('scroll', () => {
+			if (banner.getBoundingClientRect().bottom+8 < 0) {
+				toc.classList.add("fixed");
+			} else {
+				toc.classList.remove("fixed");
+			}
+			keys.forEach((k) => {
+				let ele = document.getElementById(k+"-outer");
+				let tocent = document.getElementById(k+"-tocent");
+				let rect = ele.getBoundingClientRect();
+				if ((k === 'intro' || rect.top <= 0) && rect.bottom > 0) {
+					tocent.classList.add("active");
+					if (tocent.nodeName === "SUMMARY" && !tocent.parentElement.open) {
+						tocent.parentElement.dataset.openDueToScroll = true;
+						tocent.parentElement.open = true;
+					}
+				} else {
+					tocent.classList.remove("active");
+					if (tocent.nodeName === "SUMMARY") {
+						if (tocent.parentElement.dataset.openDueToScroll) {
+							tocent.parentElement.open = false;
+						}
+						delete tocent.parentElement.dataset.openDueToScroll;
+					}
+				}
+			});
+		});
+	</script>
+	<div class="inner">
+		<div id="intro-outer">
+			<p>
+				<b><a href="https://www.curseforge.com/minecraft/mc-mods/fabrication">Fabrication</a></b> is a huge collection of vanilla tweaks and small features for Minecraft 1.16. <b><a href="https://www.curseforge.com/minecraft/mc-mods/forgery">Forgery</a></b> is a version of Fabrication specially distorted to work under Forge rather than Fabric.
+			</p>
+			<p><em><del style="font-size: 0.45em">60</del> <del style="font-size: 0.45em">62</del> <del style="font-size: 0.45em">68</del> <del style="font-size: 0.45em">70</del> <del style="font-size: 0.45em">76</del> <del style="font-size: 0.5em">78</del> <del style="font-size: 0.5833333333333334em">89</del> <del style="font-size: 0.6666666666666666em">94</del> <del style="font-size: 0.75em">102</del> <del style="font-size: 0.8333333333333334em">103</del> <del style="font-size: 0.9166666666666666em">112</del> <del style="font-size: 1em">120</del> <del style="font-size: 1em">123</del> <del style="font-size: 1em">128</del> <del style="font-size: 1em">130</del> </em><strong>176</strong> features and counting.</p>
+		</div>
+		<span id="toc">
+		<h1>Table of Contents</h1>
+		<p>
+		Click arrows to expand.
+		</p>
+		<div style="padding: 8px">
+		<ul style="margin: 0; padding-left: 0">
+			<li><a href="#faq">FAQ</a></li>
+		</ul>
+		<details>
+			<summary><a href="#meta">Meta</a></summary>
+			<ul style="margin: 0">
+				<li><a href="#config_screen">Config Screen</a></li>
+				<li><a href="#config_command">Config Command</a></li>
+				<li><a href="#block_distribution_analysis">Block Distribution Analysis</a></li>
+				<li><a href="#atlas_viewer">Atlas Viewer</a></li>
+				<li><a href="#search">Search</a></li>
+			</ul>
+		</details>
+		<details>
+			<summary><a href="#general">General</a></summary>
+			<ul style="margin: 0">
+				<li><a href="#general.dark_mode">Dark Mode</a></li>
+				<li><a href="#general.data_upload">Data Upload</a></li>
+				<li><a href="#general.profile">Profile</a></li>
+				<li><a href="#general.reduced_motion">Reduced Motion</a></li>
+			</ul>
+		</details>
+		<details>
+			<summary><a href="#fixes">Fixes</a></summary>
+			<ul style="margin: 0">
+				<li><a href="#fixes.adventure_tags_in_survival">Adventure Tags In Survival</a></li>
+				<li><a href="#fixes.better_pause_freezing">Better Pause Freezing</a></li>
+				<li><a href="#fixes.boundless_levels">Boundless Levels</a></li>
+				<li><a href="#fixes.colored_crack_particles">Colored Crack Particles</a></li>
+				<li><a href="#fixes.fix_charm_amethyst_dupe">Fix Charm Amethyst Dupe</a></li>
+				<li><a href="#fixes.fix_superflat_bad_structures">Fix Superflat Bad Structures</a></li>
+				<li><a href="#fixes.furnace_minecart_pushing">Furnace Minecart Pushing</a></li>
+				<li><a href="#fixes.ghast_charging">Ghast Charging</a></li>
+				<li><a href="#fixes.inanimates_can_be_invisible">Inanimates Can Be Invisible</a></li>
+				<li><a href="#fixes.multiline_sign_paste">Multiline Sign Paste</a></li>
+				<li><a href="#fixes.no_night_vision_flash">No Night Vision Flashing</a></li>
+				<li><a href="#fixes.omniscent_player">Omniscent Player</a></li>
+				<li><a href="#fixes.open_inventories_in_nether_portal">Open Inventories in Nether Portals</a></li>
+				<li><a href="#fixes.silverfish_step">Silverfish Step</a></li>
+				<li><a href="#fixes.stable_cacti">Stable Cacti</a></li>
+				<li><a href="#fixes.sync_attacker_yaw">Sync Attacker Yaw</a></li>
+				<li><a href="#fixes.uncap_menu_fps">Uncap Menu FPS</a></li>
+				<li><a href="#fixes.use_player_list_name_in_tag">Use Player List Name In Tag</a></li>
+			</ul>
+		</details>
+		<details>
+			<summary><a href="#utility">Utility</a></summary>
+			<ul style="margin: 0">
+				<li><a href="#utility.books_show_enchants">Books Show Enchants</a></li>
+				<li><a href="#utility.canhit">CanHit</a></li>
+				<li><a href="#utility.despawning_items_blink">Despawning Items Blink</a></li>
+				<li><a href="#utility.hide_armor">Hide Armor</a></li>
+				<li><a href="#utility.i_and_more">/i And More</a></li>
+				<li><a href="#utility.item_despawn">Item Despawn Control</a></li>
+				<li><a href="#utility.killmessage">KillMessage</a></li>
+				<li><a href="#utility.legacy_command_syntax">Legacy Command Syntax</a></li>
+				<li><a href="#utility.mob_ids">Mob IDs</a></li>
+				<li><a href="#utility.mods_command">/mods Command</a></li>
+				<li><a href="#utility.ping_privacy">Ping Privacy</a></li>
+				<li><a href="#utility.show_bee_count_on_item">Show Bee Count</a></li>
+				<li><a href="#utility.show_bee_count_tooltip">Show Bee Count</a></li>
+				<li><a href="#utility.show_map_id">Show Map ID</a></li>
+				<li><a href="#utility.taggable_players">Taggable Players</a></li>
+				<li><a href="#utility.toggle_sprint">Toggle Sprint</a></li>
+				<li><a href="#utility.toggle_stance">Toggle Stance</a></li>
+				<li><a href="#utility.tools_show_important_enchant">Tools Show Important Enchant</a></li>
+				<li><a href="#utility.yeet_recipes">Yeet Recipes</a></li>
+			</ul>
+		</details>
+		<details>
+			<summary><a href="#tweaks">Tweaks</a></summary>
+			<ul style="margin: 0">
+				<li><a href="#tweaks.alt_absorption_sound">Alt Absorption Sound</a></li>
+				<li><a href="#tweaks.arrows_work_in_water">Arrows Work In Water</a></li>
+				<li><a href="#tweaks.bush_walk_doesnt_hurt_with_armor">Bush Walk Doesn&#x27;t Hurt With Armor</a></li>
+				<li><a href="#tweaks.cactus_brush_doesnt_hurt_with_chest">Cactus Brush Doesn&#x27;t Hurt With Chest</a></li>
+				<li><a href="#tweaks.cactus_walk_doesnt_hurt_with_boots">Cactus Walk Doesn&#x27;t Hurt With Boots</a></li>
+				<li><a href="#tweaks.campfires_cook_entities">Campfires Cook Entities</a></li>
+				<li><a href="#tweaks.campfires_ignite_entities">Campfires Ignite Entities</a></li>
+				<li><a href="#tweaks.campfires_place_unlit">Campfires Place Unlit</a></li>
+				<li><a href="#tweaks.cracking_spawn_eggs">Cracking Spawn Eggs</a></li>
+				<li><a href="#tweaks.feather_falling_no_trample">Feather Falling No Trample</a></li>
+				<li><a href="#tweaks.flammable_cobwebs">Flammable Cobwebs</a></li>
+				<li><a href="#tweaks.fullres_banner_shields">Fullres Banner Shields</a></li>
+				<li><a href="#tweaks.ghast_panic">Ghast Panic</a></li>
+				<li><a href="#tweaks.legible_signs">Legible Signs</a></li>
+				<li><a href="#tweaks.less_annoying_fire">Less Annoying Fire</a></li>
+				<li><a href="#tweaks.less_restrictive_note_blocks">Less Restrictive Note Blocks</a></li>
+				<li><a href="#tweaks.long_levelup_sound_at_30">Long Level Up Sound At 30</a></li>
+				<li><a href="#tweaks.nether_cauldron">Nether Cauldron</a></li>
+				<li><a href="#tweaks.no_dinnerlava">No Dinnerlava</a></li>
+				<li><a href="#tweaks.no_sneak_bypass">No Sneak Bypass</a></li>
+				<li><a href="#tweaks.normal_fog_with_night_vision">Normal Fog With Night Vision</a></li>
+				<li><a href="#tweaks.play_note_blocks_in_creative">Play Note Blocks In Creative</a></li>
+				<li><a href="#tweaks.rainbow_experience">Rainbow Experience</a></li>
+				<li><a href="#tweaks.recipe_book_auto_craft">Recipe Book Auto Craft</a></li>
+				<li><a href="#tweaks.reverse_note_block_tuning">Reverse Note Block Tuning</a></li>
+				<li><a href="#tweaks.see_items_while_riding">See Held Items While Riding</a></li>
+				<li><a href="#tweaks.shulker_bullets_despawn_on_death">Shulker Bullets Despawn On Death</a></li>
+				<li><a href="#tweaks.silent_minecarts">Silent Minecarts</a></li>
+				<li><a href="#tweaks.tridents_in_void_return">Tridents In Void Return</a></li>
+			</ul>
+		</details>
+		<details>
+			<summary><a href="#minor_mechanics">Minor Mechanics</a></summary>
+			<ul style="margin: 0">
+				<li><a href="#minor_mechanics.cactus_punching_hurts">Cactus Punching Hurts</a></li>
+				<li><a href="#minor_mechanics.crawling">Crawling</a></li>
+				<li><a href="#minor_mechanics.exact_note_block_tuning">Exact Note Block Tuning</a></li>
+				<li><a href="#minor_mechanics.feather_falling_five">Feather Falling V</a></li>
+				<li><a href="#minor_mechanics.feather_falling_five_damages_boots">Feather Falling V Damages Boots</a></li>
+				<li><a href="#minor_mechanics.fire_aspect_is_flint_and_steel">Fire Aspect Is Flint And Steel</a></li>
+				<li><a href="#minor_mechanics.fire_protection_on_any_item">Fire Protection On Any Item</a></li>
+				<li><a href="#minor_mechanics.furnace_minecart_any_fuel">Furnace Minecart Accepts Any Fuel</a></li>
+				<li><a href="#minor_mechanics.infibows">InfiBows</a></li>
+				<li><a href="#minor_mechanics.invisibility_splash_on_inanimates">Invisibility Splash On Inanimates</a></li>
+				<li><a href="#minor_mechanics.mechanism_muffling">Mechanism Muffling</a></li>
+				<li><a href="#minor_mechanics.note_block_notes">Note Block Notes</a></li>
+				<li><a href="#minor_mechanics.note_blocks_play_on_landing">Note Blocks Play On Landing</a></li>
+				<li><a href="#minor_mechanics.observers_see_entities">Observers See Entities</a></li>
+				<li><a href="#minor_mechanics.observers_see_entities_living_only">Observers See Entities - Living Only</a></li>
+				<li><a href="#minor_mechanics.spiders_cant_climb_glazed_terracotta">Spiders Can&#x27;t Climb Glazed Terracotta</a></li>
+				<li><a href="#minor_mechanics.spiders_cant_climb_while_wet">Spiders Can&#x27;t Climb While Wet</a></li>
+				<li><a href="#minor_mechanics.tridents_activate_levers">Tridents Activate Levers</a></li>
+				<li><a href="#minor_mechanics.unsaddle_creatures">Unsaddle Creatures</a></li>
+				<li><a href="#minor_mechanics.water_fills_on_break">Water Fills On Break</a></li>
+			</ul>
+		</details>
+		<details>
+			<summary><a href="#mechanics">Mechanics</a></summary>
+			<ul style="margin: 0">
+				<li><a href="#mechanics.anvil_repair">Anvil Repair</a></li>
+				<li><a href="#mechanics.bottled_air">Bottled Air</a></li>
+				<li><a href="#mechanics.broken_tools_drop_components">Broken Gear Drops Components</a></li>
+				<li><a href="#mechanics.enhanced_moistness">Enhanced Moistness</a></li>
+				<li><a href="#mechanics.grindstone_disenchanting">Grindstone Disenchanting</a></li>
+				<li><a href="#mechanics.obsidian_tears">Obsidian Tears</a></li>
+				<li><a href="#mechanics.pursurvers">Pursurvers</a></li>
+				<li><a href="#mechanics.slowfall_splash_on_inanimates">Slow Fall Splash On Inanimates</a></li>
+			</ul>
+		</details>
+		<details>
+			<summary><a href="#balance">Balance</a></summary>
+			<ul style="margin: 0">
+				<li><a href="#balance.anvil_damage_only_on_fall">Anvils Take Damage Only When Falling</a></li>
+				<li><a href="#balance.anvil_full_repair">Anvil Fully Repairs</a></li>
+				<li><a href="#balance.anvil_rename_always_costs_one">Anvil Rename Always Costs One</a></li>
+				<li><a href="#balance.bedrock_impaling">Bedrock-Like Impaling</a></li>
+				<li><a href="#balance.disable_elytra_boost">Disable Elytra Boost</a></li>
+				<li><a href="#balance.disable_mending">Disable Mending</a></li>
+				<li><a href="#balance.disable_mending_trade">Disable Mending Trade</a></li>
+				<li><a href="#balance.disable_pearl_stasis">Disable Storing Thrown Ender Pearls</a></li>
+				<li><a href="#balance.disable_prior_work_penalty">Disable Prior Work Penalty</a></li>
+				<li><a href="#balance.drop_more_exp_on_death">Drop More Experience On Death</a></li>
+				<li><a href="#balance.ender_dragon_always_spawn_egg">Ender Dragon Always Spawns Dragon Egg</a></li>
+				<li><a href="#balance.ender_dragon_full_xp">Full Ender Dragon XP</a></li>
+				<li><a href="#balance.environmentally_friendly_creepers">Environmentally Friendly Creepers</a></li>
+				<li><a href="#balance.faster_obsidian">Faster Obsidian</a></li>
+				<li><a href="#balance.food_always_edible">Food Always Edible</a></li>
+				<li><a href="#balance.hyperspeed_furnace_minecart">Hyperspeed Furnace Minecart</a></li>
+				<li><a href="#balance.infinity_crossbows">Infinity Crossbows</a></li>
+				<li><a href="#balance.infinity_mending">Infinity &amp; Mending</a></li>
+				<li><a href="#balance.loading_furnace_minecart">ChunkLoading Furnace Minecart</a></li>
+				<li><a href="#balance.mobs_dont_drop_ingots">Mobs Drop Less Metal</a></li>
+				<li><a href="#balance.pickup_skeleton_arrows">Pickup Skeleton Arrows</a></li>
+				<li><a href="#balance.soul_speed_doesnt_damage_boots">Soul Speed Doesn&#x27;t Damage Boots</a></li>
+				<li><a href="#balance.spawners_always_tick">Spawners Always Tick</a></li>
+				<li><a href="#balance.tridents_accept_power">Tridents Accept Power</a></li>
+				<li><a href="#balance.tridents_accept_sharpness">Tridents Accept Sharpness</a></li>
+			</ul>
+		</details>
+		<details>
+			<summary><a href="#weird_tweaks">Weird Tweaks</a></summary>
+			<ul style="margin: 0">
+				<li><a href="#weird_tweaks.blaze_fertilizer">Blaze Powder Grows Nether Wart</a></li>
+				<li><a href="#weird_tweaks.creepers_explode_when_on_fire">Creepers Explode When On Fire</a></li>
+				<li><a href="#weird_tweaks.dimensional_tools">Dimensional Tools</a></li>
+				<li><a href="#weird_tweaks.disable_equip_sound">Disable Equip Sound</a></li>
+				<li><a href="#weird_tweaks.disable_nether_fog">Disable Nether Fog</a></li>
+				<li><a href="#weird_tweaks.disable_night_skip">Disable Night Skip</a></li>
+				<li><a href="#weird_tweaks.drop_exp_with_keep_inventory">Drop Experience With keepInventory</a></li>
+				<li><a href="#weird_tweaks.endermen_dont_grief">Endermen Don&#x27;t Grief</a></li>
+				<li><a href="#weird_tweaks.endermen_dont_squeal">Endermen Don&#x27;t Squeal</a></li>
+				<li><a href="#weird_tweaks.instant_pickup">Instant Pickup</a></li>
+				<li><a href="#weird_tweaks.item_safe_cactus">Item Safe Cactus</a></li>
+				<li><a href="#weird_tweaks.leaves_grow_grass">Leaves Grow Grass</a></li>
+				<li><a href="#weird_tweaks.photoallergic_creepers">Photoallergic Creepers</a></li>
+				<li><a href="#weird_tweaks.photoresistant_mobs">Photoresistant Mobs</a></li>
+				<li><a href="#weird_tweaks.repelling_void">Déjà Void</a></li>
+				<li><a href="#weird_tweaks.underwater_explosions">Underwater Explosions</a></li>
+				<li><a href="#weird_tweaks.use_items_while_riding">Use Items While Riding</a></li>
+				<li><a href="#weird_tweaks.villagers_follow_emerald_blocks">Villagers Follow Emerald Blocks</a></li>
+			</ul>
+		</details>
+		<details>
+			<summary><a href="#woina">What&#x27;s Old Is New Again</a></summary>
+			<ul style="margin: 0">
+				<li><a href="#woina.billboard_drops">Billboard Drops</a></li>
+				<li><a href="#woina.blinking_drops">Blinking Drops</a></li>
+				<li><a href="#woina.block_logo">Block Logo</a></li>
+				<li><a href="#woina.classic_block_drops">Classic Block Drops</a></li>
+				<li><a href="#woina.dirt_screen">Dirt Screen</a></li>
+				<li><a href="#woina.dropped_items_dont_stack">Dropped Items Don&#x27;t Stack</a></li>
+				<li><a href="#woina.flat_items">Flat Items</a></li>
+				<li><a href="#woina.instant_bow">Instant Bow</a></li>
+				<li><a href="#woina.instant_eat">Instant Eat</a></li>
+				<li><a href="#woina.janky_arm">Janky Arm</a></li>
+				<li><a href="#woina.no_experience">No Experience</a></li>
+				<li><a href="#woina.no_hand_sway">No Hand Sway</a></li>
+				<li><a href="#woina.no_sprint">No Sprint</a></li>
+				<li><a href="#woina.old_lava">Old Lava</a></li>
+				<li><a href="#woina.old_sheep_shear">Old Sheep Shear</a></li>
+				<li><a href="#woina.old_tooltip">Old Tooltip</a></li>
+				<li><a href="#woina.oof">Oof</a></li>
+			</ul>
+		</details>
+		<details>
+			<summary><a href="#pedantry">Pedantry</a></summary>
+			<ul style="margin: 0">
+				<li><a href="#pedantry.oak_is_apple">Oak Is Apple</a></li>
+				<li><a href="#pedantry.tnt_is_dynamite">TNT Is Dynamite</a></li>
+			</ul>
+		</details>
+		<details>
+			<summary><a href="#situational">Situational</a></summary>
+			<ul style="margin: 0">
+				<li><a href="#situational.all_damage_is_fatal">All Damage Is Fatal</a></li>
+				<li><a href="#situational.disable_bees">Disable Bees</a></li>
+				<li><a href="#situational.disable_elytra">Disable Elytra</a></li>
+				<li><a href="#situational.disable_villagers">Disable Villagers</a></li>
+				<li><a href="#situational.item_frame_no_name_display">Item Frames Don&#x27;t Display Name Tags</a></li>
+				<li><a href="#situational.player_free_spawners">Player Free Spawners</a></li>
+				<li><a href="#situational.static_dragon_egg">Static Dragon Egg</a></li>
+				<li><a href="#situational.weapons_accept_silk">Weapons Accept Silk</a></li>
+			</ul>
+		</details>
+		<details>
+			<summary><a href="#experiments">Experiments</a></summary>
+			<ul style="margin: 0">
+				<li><a href="#experiments.no_set_window_pos">No Set Window Pos</a></li>
+				<li><a href="#experiments.packed_atlases">Packed Atlases</a></li>
+			</ul>
+		</details>
+		</div>
+		</span>
+		<div id="faq-outer" class="pad">
+		<a id="faq"></a>
+		<h1>FAQ</h1>
+		<div class="pad">
+		<h2>Will you add <code>$THING</code>?</h2>
+		<p>
+			Probably not. I have a huge workload even beyond Fabrication, and the Fabrication backlog is extremely large by this point. You can still <a href="https://github.com/unascribed/Fabrication-Features/issues/new/choose">open an issue</a> and receive your judgement. If you make a PR then it will likely be accepted.
+		</p>
+		<h2>Why the name Fabrication?</h2>
+		<p>
+			Naming mods is hard, and naming things with no real topic or theme is even harder. So I just named it after the first word to come to mind while setting up the Fabric workspace. The "full" name is "A Total Fabrication", and the logo alludes to "Fabric Vacation".
+		</p>
+		<h2>Why the name Forgery?</h2>
+		<p>
+			For the parallel with Fabrication. The "full" name is "A Complete Forgery".
+		</p>
+		</div>
+		</div>
+		<div id="meta-outer" class="pad">
+		<a id="meta"></a>
+		<h1>Meta</h1>
+		<div>
+		<div id="config_screen-outer" class="pad">
+		<a id="config_screen"></a>
+		<h2>Config Screen</h2>
+		<div class="indent">
+		
+		
+		
+		<p>Fabrication has a nice ingame configuration GUI accessed via Mod Menu on Fabric or the built-in Mods screen on Forge. It can be used to change profiles and toggle all features.</p>
+<p>The GUI is client/server aware (note Fabrication does not currently have config syncing outside of the GUI) and can be used to view the server's config, or even change it if you're an op.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/config_screen.mp4" poster="https://falsehoodmc.github.io/config_screen-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="config_command-outer" class="pad">
+		<a id="config_command"></a>
+		<h2>Config Command</h2>
+		<div class="indent">
+		
+		
+		
+		<p>The /fabrication command has a &quot;config&quot; subcommand that can be used to reload config files, set config keys, and get config keys. This is useful from command blocks (used extensively in the demo videos), from non-Fabrication clients, or from Forge clients (no ingame Mods button in 1.16)</p>
+
+		</div>
+		</div>
+		<div id="block_distribution_analysis-outer" class="pad">
+		<a id="block_distribution_analysis"></a>
+		<h2>Block Distribution Analysis</h2>
+		<div class="indent">
+		
+		
+		
+		<p>The /fabrication command has an &quot;analyze&quot; subcommand that can be used to perform block distribution analysis on the world. By default it will scan the dimension you're in, but you can specify an alternate dimension if you want. A biome filter can also be specified.</p>
+<p>This will generate and/or load a ton of chunks. Use with caution. Progress reports go to the console; once complete, a TSV (tab-separated value) file will be written to the game directory.</p>
+
+		<h3>Demonstration image</h3>
+			<img class="media" src="https://falsehoodmc.github.io/block_distribution_analysis.png"/>
+		</div>
+		</div>
+		<div id="atlas_viewer-outer" class="pad">
+		<a id="atlas_viewer"></a>
+		<h2>Atlas Viewer</h2>
+		<div class="indent">
+		
+		
+		
+		<p>The /fabrication:client command (available under Fabric if you have Cotton Client Commands installed - Forge does not support client commands) has an &quot;atlas&quot; subcommand that can be used to view any of the loaded texture atlases. Information on sprites will be shown when hovered.</p>
+<p>This is an invaluable debugging tool for various kinds of atlas disasters, and was added to debug a sprite overwrite issue with Old Lava.</p>
+
+		<h3>Demonstration image</h3>
+			<img class="media" src="https://falsehoodmc.github.io/atlas_viewer.png"/>
+		</div>
+		</div>
+		<div id="search-outer" class="pad">
+		<a id="search"></a>
+		<h2>Search</h2>
+		<div class="indent">
+		
+		
+		<b class="since">Added in v1.4.0</b><br/>
+		
+		</div>
+		</div>
+		</div>
+		</div>
+		<div id="general-outer" class="pad">
+		<a id="general"></a>
+		<h1>General</h1>
+		<div>
+		<div id="general.dark_mode-outer" class="pad">
+		<a id="general.dark_mode"></a>
+		<h2>Dark Mode</h2>
+		<div class="indent">
+		<b>Key</b>: <code>general.dark_mode</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v2.0.0</b><br/>
+		<p>Makes the config screen darker.</p>
+
+		</div>
+		</div>
+		<div id="general.data_upload-outer" class="pad">
+		<a id="general.data_upload"></a>
+		<h2>Data Upload</h2>
+		<div class="indent">
+		<b>Key</b>: <code>general.data_upload</code><br/>
+		
+		<b class="since">Added in v1.3.2</b><br/>
+		<p>Enables submitting anonymous data to a self-hosted privacy-respecting Matomo instance run by unascribed. The following data is submitted: Fabrication version, Minecraft version, Forge/Fabric version, Java version, approximate window aspect ratio, OpenGL version, selected language, operating system name (no version), your selected profile, current status of all features, and any mixin failures.</p>
+<p>Please enable this to give me insight into what features people use, what features conflict, and to help inform development decisions based on version information.</p>
+
+		</div>
+		</div>
+		<div id="general.profile-outer" class="pad">
+		<a id="general.profile"></a>
+		<h2>Profile</h2>
+		<div class="indent">
+		<b>Key</b>: <code>general.profile</code><br/>
+		
+		<b class="since">Added in v1.0</b><br/>
+		<p>To help with Fabrication's overwhelming number of options, Profiles let you pick what kinds of features you want to be enabled by default. When a config value is set to 'unset', it is up to the profile whether it's enabled or disabled.</p>
+<p>I don't even like coffee.</p>
+<p>The available profiles are:</p>
+<ul>
+<li><strong>Green</strong>: Enables nothing by default. Build your own.</li>
+<li><strong>Blonde</strong>: Fixes and utilities only. Keeps things vanilla-y.</li>
+<li><strong>Light</strong>: Blonde + tweaks. No major gameplay changes. Default.</li>
+<li><strong>Medium</strong>: Light + gameplay and mechanic additions. Recommended; gives you most of Fabrication's features.</li>
+<li><strong>Dark</strong>: Medium + major mechanic additions.</li>
+<li><strong>Vienna</strong>: Dark + balance tweaks, weird mechanic additions, and some revivals of old features. Author's choice.</li>
+<li><strong>Burnt</strong>: Just enable everything, except the &quot;Situational&quot; and &quot;Experiments&quot; sections and most of WOINA. Vienna without the opinions.</li>
+</ul>
+
+		</div>
+		</div>
+		<div id="general.reduced_motion-outer" class="pad">
+		<a id="general.reduced_motion"></a>
+		<h2>Reduced Motion</h2>
+		<div class="indent">
+		<b>Key</b>: <code>general.reduced_motion</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2</b><br/>
+		<p>Disables high-motion animations in the Fabrication config screen.</p>
+
+		</div>
+		</div>
+		</div>
+		</div>
+		<div id="fixes-outer" class="pad">
+		<a id="fixes"></a>
+		<h1>Fixes</h1>
+		<div>
+		<div id="fixes.adventure_tags_in_survival-outer" class="pad">
+		<a id="fixes.adventure_tags_in_survival"></a>
+		<h2>Adventure Tags In Survival</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.adventure_tags_in_survival</code><br/>
+		<b class="sides-server_only_with_client_helper">Server &amp; Client (Client Optional)</b><br/>
+		<b class="since">Added in v1.2.1</b><br/>
+		<p>Makes the CanDestroy and CanPlaceOn tags be honored in survival mode instead of just adventure mode.</p>
+<p>Only needed on server, but the experience is more seamless if it's also on the client.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/adventure_tags_in_survival.mp4" poster="https://falsehoodmc.github.io/adventure_tags_in_survival-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="fixes.better_pause_freezing-outer" class="pad">
+		<a id="fixes.better_pause_freezing"></a>
+		<h2>Better Pause Freezing</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.better_pause_freezing</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.0.1</b><br/>
+		<p>Makes textures not tick while the game is paused, meaning animated blocks and such properly freeze instead of continuing to animate.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/better_pause_freezing.mp4" poster="https://falsehoodmc.github.io/better_pause_freezing-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="fixes.boundless_levels-outer" class="pad">
+		<a id="fixes.boundless_levels"></a>
+		<h2>Boundless Levels</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.boundless_levels</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.5</b><br/>
+		<p>Replaces translation strings for potion and enchantment levels with a dynamic algorithm that supports arbitrarily large numbers.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/boundless_levels.mp4" poster="https://falsehoodmc.github.io/boundless_levels-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="fixes.colored_crack_particles-outer" class="pad">
+		<a id="fixes.colored_crack_particles"></a>
+		<h2>Colored Crack Particles</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.colored_crack_particles</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.10</b><br/>
+		<p>Makes &quot;crack&quot; particles honor item coloration, such as leather armor dye.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/colored_crack_particles.mp4" poster="https://falsehoodmc.github.io/colored_crack_particles-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="fixes.fix_charm_amethyst_dupe-outer" class="pad">
+		<a id="fixes.fix_charm_amethyst_dupe"></a>
+		<h2>Fix Charm Amethyst Dupe</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.fix_charm_amethyst_dupe</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v2.0.0</b><br/>
+		<p>Fixes a bug in Charm caused by bad assumptions that allows generating amethyst shards if you have another mod that can make item frames invisible, such as Fabrication's own Invisibility Splash On Inanimates.</p>
+
+		</div>
+		</div>
+		<div id="fixes.fix_superflat_bad_structures-outer" class="pad">
+		<a id="fixes.fix_superflat_bad_structures"></a>
+		<h2>Fix Superflat Bad Structures</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.fix_superflat_bad_structures</code><br/>
+		<b class="sides-either">Server or Client</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Fixes a bug that some biome-adding mods have that causes their structure features to be added to a superflat world, which have a hardcoded list of supported structure features.</p>
+<p>This bug shows up as a &quot;safe mode&quot; error screen with an exception in the log showing a NullPointerException in method_30979.</p>
+<p>This will not affect mods that properly patch the superflat structures map.</p>
+
+		</div>
+		</div>
+		<div id="fixes.furnace_minecart_pushing-outer" class="pad">
+		<a id="fixes.furnace_minecart_pushing"></a>
+		<h2>Furnace Minecart Pushing</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.furnace_minecart_pushing</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Right-clicking a furnace minecart with a non-fuel while it's out of fuel gives it a little bit of fuel, allowing you to &quot;push&quot; it.</p>
+<p>Removed some time after 17w46a (1.13 pre releases); nobody seems to have noticed, and it wasn't announced.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/furnace_minecart_pushing.mp4" poster="https://falsehoodmc.github.io/furnace_minecart_pushing-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="fixes.ghast_charging-outer" class="pad">
+		<a id="fixes.ghast_charging"></a>
+		<h2>Ghast Charging</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.ghast_charging</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.8</b><br/>
+		<p>Brings back the ghast &quot;charging&quot; animation when they're about to fire a fireball that got broken in 1.3 and removed in 1.8, and never worked in multiplayer.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/ghast_charging.mp4" poster="https://falsehoodmc.github.io/ghast_charging-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="fixes.inanimates_can_be_invisible-outer" class="pad">
+		<a id="fixes.inanimates_can_be_invisible"></a>
+		<h2>Inanimates Can Be Invisible</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.inanimates_can_be_invisible</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.1.1</b><br/>
+		<p>Makes inanimate entities honor the &quot;invisible&quot; tag sent by the server. Does nothing on its own; the server must have something that marks inanimate entities as invisible, such as Fabrication's own Invisibility Splash On Inanimates.</p>
+
+		</div>
+		</div>
+		<div id="fixes.multiline_sign_paste-outer" class="pad">
+		<a id="fixes.multiline_sign_paste"></a>
+		<h2>Multiline Sign Paste</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.multiline_sign_paste</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.10</b><br/>
+		<p>Allows pasting multiple lines of text into a sign. You can also copy all the lines of a sign by holding Shift while copying.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/multiline_sign_paste.mp4" poster="https://falsehoodmc.github.io/multiline_sign_paste-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="fixes.no_night_vision_flash-outer" class="pad">
+		<a id="fixes.no_night_vision_flash"></a>
+		<h2>No Night Vision Flashing</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.no_night_vision_flash</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.9</b><br/>
+		<p>Disables the flashing effect when Night Vision is about to run out. This effect ranges from &quot;annoying&quot; to &quot;actively dangerous&quot;. With this enabled, it just slowly fades out instead.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/no_night_vision_flash.mp4" poster="https://falsehoodmc.github.io/no_night_vision_flash-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="fixes.omniscent_player-outer" class="pad">
+		<a id="fixes.omniscent_player"></a>
+		<h2>Omniscent Player</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.omniscent_player</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.1.1</b><br/>
+		<p>The player render in the inventory follows your cursor, even if it's not inside the game window.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/omniscent_player.mp4" poster="https://falsehoodmc.github.io/omniscent_player-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="fixes.open_inventories_in_nether_portal-outer" class="pad">
+		<a id="fixes.open_inventories_in_nether_portal"></a>
+		<h2>Open Inventories in Nether Portals</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.open_inventories_in_nether_portal</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Allows players to open inventories while in a nether portal.</p>
+<p>Vanilla originally made this change to fix a dupe exploit in Beta. The underlying cause of this dupe was fixed a very long time ago.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/open_inventories_in_nether_portal.mp4" poster="https://falsehoodmc.github.io/open_inventories_in_nether_portal-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="fixes.silverfish_step-outer" class="pad">
+		<a id="fixes.silverfish_step"></a>
+		<h2>Silverfish Step</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.silverfish_step</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.2.10</b><br/>
+		<p>Fixes an oversight that prevents silverfish from playing their step sound. It's also possible it's not an oversight and that Mojang simply deemed the silverfish step sound too horrible and dummied it out.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/silverfish_step.mp4" poster="https://falsehoodmc.github.io/silverfish_step-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="fixes.stable_cacti-outer" class="pad">
+		<a id="fixes.stable_cacti"></a>
+		<h2>Stable Cacti</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.stable_cacti</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.2.3</b><br/>
+		<p>Fixes cactuses being made of Explodium due to long-since-fixed engine limitations. In English: Makes cacti not break themselves if a block is placed next to them. They will still break if they <em>grow</em> into such a space, so cactus randomizers and cactus farms still work.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/stable_cacti.mp4" poster="https://falsehoodmc.github.io/stable_cacti-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="fixes.sync_attacker_yaw-outer" class="pad">
+		<a id="fixes.sync_attacker_yaw"></a>
+		<h2>Sync Attacker Yaw</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.sync_attacker_yaw</code><br/>
+		<b class="sides-server_and_client">Server &amp; Client</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes the last attacker yaw field sync properly when the player is damaged, instead of always being zero. Causes the camera shake animation when being hurt to tilt away from the source of damage instead of always tilting right.</p>
+<p>Fixes MC-26678, which is closed as Won't Fix.</p>
+<p>Needed on both client and server, but doesn't break vanilla clients.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/sync_attacker_yaw.mp4" poster="https://falsehoodmc.github.io/sync_attacker_yaw-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="fixes.uncap_menu_fps-outer" class="pad">
+		<a id="fixes.uncap_menu_fps"></a>
+		<h2>Uncap Menu FPS</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.uncap_menu_fps</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2</b><br/>
+		<p>Removes the hardcoded 60 FPS cap in menu screens, instead using whatever you have the framerate cap set to.</p>
+<p>Primarily added because in prior versions the cap was 30 FPS and I thought it still was. Maybe this is nice if you have a 144Hz display?</p>
+
+		</div>
+		</div>
+		<div id="fixes.use_player_list_name_in_tag-outer" class="pad">
+		<a id="fixes.use_player_list_name_in_tag"></a>
+		<h2>Use Player List Name In Tag</h2>
+		<div class="indent">
+		<b>Key</b>: <code>fixes.use_player_list_name_in_tag</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Changes player name tags to match names in the player list. Good in combination with nickname mods like Drogtor.</p>
+
+		<h3>Demonstration image</h3>
+			<img class="media" src="https://falsehoodmc.github.io/use_player_list_name_in_tag.png"/>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div id="utility-outer" class="pad">
+		<a id="utility"></a>
+		<h1>Utility</h1>
+		<div>
+		<div id="utility.books_show_enchants-outer" class="pad">
+		<a id="utility.books_show_enchants"></a>
+		<h2>Books Show Enchants</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.books_show_enchants</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes enchanted books show the first letter of their enchants in the bottom left, cycling through enchants every second if they have multiple.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/books_show_enchants.mp4" poster="https://falsehoodmc.github.io/books_show_enchants-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="utility.canhit-outer" class="pad">
+		<a id="utility.canhit"></a>
+		<h2>CanHit</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.canhit</code><br/>
+		<b class="sides-server_only_with_client_helper">Server &amp; Client (Client Optional)</b><br/>
+		<b class="since">Added in v1.2.1</b><br/>
+		<p>Adds a new CanHit tag that affects melee attacks, bows, crossbows, and tridents. Also works on arrows and fireworks, in which case the restrictions will be AND'd with the restrictions of the bow or crossbow doing the firing.</p>
+<p>The tag must be a list of strings, which may contain UUIDs that match a specific entity or an entity type ID optionally prefixed with a ! to invert the match.</p>
+<p>If installed on the client, adds hit information to the tooltip. You can hide this information by creating an NBT byte set to 1 called &quot;HideCanHit&quot;.</p>
+<p>For example, a sword that can only hit spiders: /give @p diamond_sword{CanHit:[&quot;spider&quot;]}</p>
+<p>A sword that can hit anything but creepers: /give @p diamond_sword{CanHit:[&quot;!creeper&quot;]}</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/canhit.mp4" poster="https://falsehoodmc.github.io/canhit-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="utility.despawning_items_blink-outer" class="pad">
+		<a id="utility.despawning_items_blink"></a>
+		<h2>Despawning Items Blink</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.despawning_items_blink</code><br/>
+		<b class="sides-server_and_client">Server &amp; Client</b><br/>
+		<b class="since">Added in v1.1</b><br/>
+		<p>Makes items that are about to despawn blink. The despawn timer is synced from the server, so this only works if the server also has it installed, but it means that the blinking only happens when it should.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/despawning_items_blink.mp4" poster="https://falsehoodmc.github.io/despawning_items_blink-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="utility.hide_armor-outer" class="pad">
+		<a id="utility.hide_armor"></a>
+		<h2>Hide Armor</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.hide_armor</code><br/>
+		<b class="sides-server_only_with_client_helper">Server &amp; Client (Client Optional)</b><br/>
+		<b class="since">Added in v1.3.0</b><br/>
+		<p>Adds /hidearmor and /showarmor commands to hide and show your armor. Works with vanilla clients for hiding armor from others; for hiding armor from yourself to work, must be present on client.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/hide_armor.mp4" poster="https://falsehoodmc.github.io/hide_armor-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="utility.i_and_more-outer" class="pad">
+		<a id="utility.i_and_more"></a>
+		<h2>/i And More</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.i_and_more</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.2.5</b><br/>
+		<p>Adds /i, /item, /more, and /fenchant commands.</p>
+<p>/i and /item are shorthand for /give to yourself, and /more increases the size of your held item's stack. /fenchant is like /enchant but it ignores all restrictions.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/i_and_more.mp4" poster="https://falsehoodmc.github.io/i_and_more-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="utility.item_despawn-outer" class="pad">
+		<a id="utility.item_despawn"></a>
+		<h2>Item Despawn Control</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.item_despawn</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.1</b><br/>
+		<p>Allows fine-grained control over item despawn times and making items invulnerable to all forms of damage including the void. You can filter by the item ID, whether the item was dropped by a player, if the item was dropped by a player dying, what enchantments are on the item, if the item is cursed, arbitrary NBT booleans, and block or item tags.</p>
+<p>Configured in config/fabrication/item_despawn.ini.</p>
+
+		<p>
+			<a href="https://github.com/unascribed/Fabrication/blob/trunk/src/main/resources/default_item_despawn_config.ini">See the default config for more info</a>
+		</p>
+		</div>
+		</div>
+		<div id="utility.killmessage-outer" class="pad">
+		<a id="utility.killmessage"></a>
+		<h2>KillMessage</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.killmessage</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.2.11</b><br/>
+		<p>Adds a KillMessage NBT tag to entities and items, allowing them to show a custom death message when they kill a player. You can use placeholders to show the name of the killed entity, the name of the killing entity, or the name of the killing entity's held item, in that order.</p>
+<p>For example, &quot;%s found a %s&quot; would show e.g. &quot;unascribed found a Skeleton&quot;. You could also write this as &quot;%1$s found a %2$s&quot; for the same result, or, say &quot;A %2$s found %1$s&quot; to show them in the opposite order, e.g. &quot;A Skeleton found unascribed&quot;. The third %s or a %3$s will show the item name; if there isn't one, [Air] will be shown.</p>
+
+		</div>
+		</div>
+		<div id="utility.legacy_command_syntax-outer" class="pad">
+		<a id="utility.legacy_command_syntax"></a>
+		<h2>Legacy Command Syntax</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.legacy_command_syntax</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Allows numeric arguments to /gamemode and /difficulty, re-adds /toggledownfall, allows TitleCase arguments to /summon, allows numeric arguments to commands that accept items like /give, and re-adds shorthand to /xp.</p>
+<p>Old habits die hard.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/legacy_command_syntax.mp4" poster="https://falsehoodmc.github.io/legacy_command_syntax-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="utility.mob_ids-outer" class="pad">
+		<a id="utility.mob_ids"></a>
+		<h2>Mob IDs</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.mob_ids</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.3.2</b><br/>
+		<p>Makes entities show their entity ID as a nametag in Creative when F3 is up. Originally a vanilla feature; was removed in Beta 1.8 as nametags are visible through walls and it was a bit cheaty in Survival.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/mob_ids.mp4" poster="https://falsehoodmc.github.io/mob_ids-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="utility.mods_command-outer" class="pad">
+		<a id="utility.mods_command"></a>
+		<h2>/mods Command</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.mods_command</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Adds a /mods command listing all mods on the server. Hovering over the mods shows their descriptions, clicking on them takes you to their homepage if they have one.</p>
+<p>If Bukkit is not present, also adds a /plugins command suggesting people use /mods instead.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/mods_command.mp4" poster="https://falsehoodmc.github.io/mods_command-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="utility.ping_privacy-outer" class="pad">
+		<a id="utility.ping_privacy"></a>
+		<h2>Ping Privacy</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.ping_privacy</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Sends no ping data to IPs that have not successfully logged in in the last 7 days.</p>
+<p>Prevents scraping. There exist services that constantly ping servers they know about and track their uptime and who's connected, which will then turn around and store the name history of discovered users permanently and make their cape publicly searchable, among other things.</p>
+
+		<h3>Demonstration image</h3>
+			<img class="media" src="https://falsehoodmc.github.io/ping_privacy.png"/>
+		</div>
+		</div>
+		<div id="utility.show_bee_count_on_item-outer" class="pad">
+		<a id="utility.show_bee_count_on_item"></a>
+		<h2>Show Bee Count</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.show_bee_count_on_item</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Makes bee hive items show amount of contained bees.</p>
+
+		</div>
+		</div>
+		<div id="utility.show_bee_count_tooltip-outer" class="pad">
+		<a id="utility.show_bee_count_tooltip"></a>
+		<h2>Show Bee Count</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.show_bee_count_tooltip</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Makes bee hive tooltips show amount of contained bees.</p>
+
+		</div>
+		</div>
+		<div id="utility.show_map_id-outer" class="pad">
+		<a id="utility.show_map_id"></a>
+		<h2>Show Map ID</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.show_map_id</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Makes filled maps show their ID.</p>
+
+		</div>
+		</div>
+		<div id="utility.taggable_players-outer" class="pad">
+		<a id="utility.taggable_players"></a>
+		<h2>Taggable Players</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.taggable_players</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Allows you to assign or unassign various &quot;tags&quot; from players via /fabrication tag.</p>
+<p>Valid tags:</p>
+<ul>
+<li>invisible_to_mobs - The player cannot be targeted by mobs at all. Sorta like Apathetic Mobs.</li>
+<li>no_hunger - The player never loses food, and when they eat food it instead heals them directly. Sorta like Hunger Strike.</li>
+<li>fireproof - The player cannot take fire damage.</li>
+<li>can_breathe_water - The player does not lose air while underwater.</li>
+<li>permanent_dolphins_grace - The player always has Dolphin's Grace.</li>
+<li>permanent_conduit_power - The player always has Conduit Power.</li>
+<li>scares_creepers - (Since 1.1) The player scares creepers.</li>
+<li>no_phantoms - (Since 1.1) The player cannot have phantoms spawn on them.</li>
+</ul>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/taggable_players.mp4" poster="https://falsehoodmc.github.io/taggable_players-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="utility.toggle_sprint-outer" class="pad">
+		<a id="utility.toggle_sprint"></a>
+		<h2>Toggle Sprint</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.toggle_sprint</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Adds a &quot;Toggle/Hold Sprint&quot; keybind. Vanilla has an accessibility option to make the Sneak key work as a toggle, since it can be useful to have a hold and toggle button at the same time this keybind will take the other mode of the accessibility setting.</p>
+
+		</div>
+		</div>
+		<div id="utility.toggle_stance-outer" class="pad">
+		<a id="utility.toggle_stance"></a>
+		<h2>Toggle Stance</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.toggle_stance</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.3.0</b><br/>
+		<p>Adds a &quot;Toggle Stance&quot; keybind to switch between standing and sneaking. Vanilla has an accessibility option to make the existing Sneak key work as a toggle, but it can be useful to have a hold-to-sneak and toggle-sneak button at the same time.</p>
+<p>Interacts with Minor Mechanics &gt; Crawling; if they are both enabled, the Toggle Stance key will cycle between standing, sneaking, and crawling.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/toggle_stance.mp4" poster="https://falsehoodmc.github.io/toggle_stance-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="utility.tools_show_important_enchant-outer" class="pad">
+		<a id="utility.tools_show_important_enchant"></a>
+		<h2>Tools Show Important Enchant</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.tools_show_important_enchant</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes tools enchanted with Silk Touch, Fortune, or Riptide show the first letter of that enchant in the top left.</p>
+<p>Never break an Ender Chest with the wrong tool again.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/tools_show_important_enchant.mp4" poster="https://falsehoodmc.github.io/tools_show_important_enchant-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="utility.yeet_recipes-outer" class="pad">
+		<a id="utility.yeet_recipes"></a>
+		<h2>Yeet Recipes</h2>
+		<div class="indent">
+		<b>Key</b>: <code>utility.yeet_recipes</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.3.2</b><br/>
+		<p>Adds a yeet_recipes.ini that can be used to completely remove any recipe.</p>
+
+		</div>
+		</div>
+		</div>
+		</div>
+		<div id="tweaks-outer" class="pad">
+		<a id="tweaks"></a>
+		<h1>Tweaks</h1>
+		<div>
+		<div id="tweaks.alt_absorption_sound-outer" class="pad">
+		<a id="tweaks.alt_absorption_sound"></a>
+		<h2>Alt Absorption Sound</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.alt_absorption_sound</code><br/>
+		<b class="sides-server_and_client">Server &amp; Client</b><br/>
+		<b class="since">Added in v1.3.4</b><br/>
+		<p>Taking damage that is completely absorbed by Absorption plays a different (custom) sound.</p>
+<p>Required on both sides, but doesn't break vanilla clients.</p>
+
+		</div>
+		</div>
+		<div id="tweaks.arrows_work_in_water-outer" class="pad">
+		<a id="tweaks.arrows_work_in_water"></a>
+		<h2>Arrows Work In Water</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.arrows_work_in_water</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Reduces arrow drag in water by a fair bit to make bows useful underwater. Not nearly as good as a trident, but usable.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/arrows_work_in_water.mp4" poster="https://falsehoodmc.github.io/arrows_work_in_water-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.bush_walk_doesnt_hurt_with_armor-outer" class="pad">
+		<a id="tweaks.bush_walk_doesnt_hurt_with_armor"></a>
+		<h2>Bush Walk Doesn&#x27;t Hurt With Armor</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.bush_walk_doesnt_hurt_with_armor</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.1</b><br/>
+		<p>Makes walking through berry bushes with both leggings and boots equipped not deal damage.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/bush_walk_doesnt_hurt_with_armor.mp4" poster="https://falsehoodmc.github.io/bush_walk_doesnt_hurt_with_armor-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.cactus_brush_doesnt_hurt_with_chest-outer" class="pad">
+		<a id="tweaks.cactus_brush_doesnt_hurt_with_chest"></a>
+		<h2>Cactus Brush Doesn&#x27;t Hurt With Chest</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.cactus_brush_doesnt_hurt_with_chest</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.1</b><br/>
+		<p>Makes touching the side of a cactus (not walking on top of one) with a chestplate equipped not deal damage.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/cactus_brush_doesnt_hurt_with_chest.mp4" poster="https://falsehoodmc.github.io/cactus_brush_doesnt_hurt_with_chest-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.cactus_walk_doesnt_hurt_with_boots-outer" class="pad">
+		<a id="tweaks.cactus_walk_doesnt_hurt_with_boots"></a>
+		<h2>Cactus Walk Doesn&#x27;t Hurt With Boots</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.cactus_walk_doesnt_hurt_with_boots</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes walking on top of a cactus (not touching the side of one) with boots equipped not deal damage.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/cactus_walk_doesnt_hurt_with_boots.mp4" poster="https://falsehoodmc.github.io/cactus_walk_doesnt_hurt_with_boots-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.campfires_cook_entities-outer" class="pad">
+		<a id="tweaks.campfires_cook_entities"></a>
+		<h2>Campfires Cook Entities</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.campfires_cook_entities</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Campfires will cook entities without setting them on fire.</p>
+
+		</div>
+		</div>
+		<div id="tweaks.campfires_ignite_entities-outer" class="pad">
+		<a id="tweaks.campfires_ignite_entities"></a>
+		<h2>Campfires Ignite Entities</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.campfires_ignite_entities</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Campfires will set fire to mobs standing on them, therefore also cooking them.</p>
+
+		</div>
+		</div>
+		<div id="tweaks.campfires_place_unlit-outer" class="pad">
+		<a id="tweaks.campfires_place_unlit"></a>
+		<h2>Campfires Place Unlit</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.campfires_place_unlit</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.1.1</b><br/>
+		<p>Campfires are unlit when placed and must be lit with a Flint and Steel.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/campfires_place_unlit.mp4" poster="https://falsehoodmc.github.io/campfires_place_unlit-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.cracking_spawn_eggs-outer" class="pad">
+		<a id="tweaks.cracking_spawn_eggs"></a>
+		<h2>Cracking Spawn Eggs</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.cracking_spawn_eggs</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.2.10</b><br/>
+		<p>Spawn eggs spawn cracking particles and play a sound when used.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/cracking_spawn_eggs.mp4" poster="https://falsehoodmc.github.io/cracking_spawn_eggs-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.feather_falling_no_trample-outer" class="pad">
+		<a id="tweaks.feather_falling_no_trample"></a>
+		<h2>Feather Falling No Trample</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.feather_falling_no_trample</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.3.0</b><br/>
+		<p>Farmland will not get trampled when wearing feather falling.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/feather_falling_no_trample.mp4" poster="https://falsehoodmc.github.io/feather_falling_no_trample-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.flammable_cobwebs-outer" class="pad">
+		<a id="tweaks.flammable_cobwebs"></a>
+		<h2>Flammable Cobwebs</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.flammable_cobwebs</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.2.8</b><br/>
+		<p>Cobwebs can burn.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/flammable_cobwebs.mp4" poster="https://falsehoodmc.github.io/flammable_cobwebs-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.fullres_banner_shields-outer" class="pad">
+		<a id="tweaks.fullres_banner_shields"></a>
+		<h2>Fullres Banner Shields</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.fullres_banner_shields</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.10</b><br/>
+		<p>Makes shields use the full-res banner patterns instead of weird smaller versions. Compatible with custom patterns and resource packs.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/fullres_banner_shields.mp4" poster="https://falsehoodmc.github.io/fullres_banner_shields-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.ghast_panic-outer" class="pad">
+		<a id="tweaks.ghast_panic"></a>
+		<h2>Ghast Panic</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.ghast_panic</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.2.10</b><br/>
+		<p>Makes ghasts randomly play the unused &quot;scream&quot; sound when outside of the Nether.</p>
+
+		</div>
+		</div>
+		<div id="tweaks.legible_signs-outer" class="pad">
+		<a id="tweaks.legible_signs"></a>
+		<h2>Legible Signs</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.legible_signs</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.10</b><br/>
+		<p>Adjusts sign text colors to be less garbage.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/legible_signs.mp4" poster="https://falsehoodmc.github.io/legible_signs-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.less_annoying_fire-outer" class="pad">
+		<a id="tweaks.less_annoying_fire"></a>
+		<h2>Less Annoying Fire</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.less_annoying_fire</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes the &quot;on fire&quot; overlay half as tall, and removes it completely if you have Fire Resistance.</p>
+<p>Especially nice with resource packs like Faithful that have tall fire textures.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/less_annoying_fire.mp4" poster="https://falsehoodmc.github.io/less_annoying_fire-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.less_restrictive_note_blocks-outer" class="pad">
+		<a id="tweaks.less_restrictive_note_blocks"></a>
+		<h2>Less Restrictive Note Blocks</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.less_restrictive_note_blocks</code><br/>
+		<b class="sides-server_only_with_client_helper">Server &amp; Client (Client Optional)</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Allows note blocks to play if any block next to them has a nonsolid face, instead of only if the block above is air.</p>
+<p>On the client, just adjusts the note particle to fly the right direction.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/less_restrictive_note_blocks.mp4" poster="https://falsehoodmc.github.io/less_restrictive_note_blocks-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.long_levelup_sound_at_30-outer" class="pad">
+		<a id="tweaks.long_levelup_sound_at_30"></a>
+		<h2>Long Level Up Sound At 30</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.long_levelup_sound_at_30</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.1</b><br/>
+		<p>Plays the old longer level up sound when you reach level 30.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/long_levelup_sound_at_30.mp4" poster="https://falsehoodmc.github.io/long_levelup_sound_at_30-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.nether_cauldron-outer" class="pad">
+		<a id="tweaks.nether_cauldron"></a>
+		<h2>Nether Cauldron</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.nether_cauldron</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.3.0</b><br/>
+		<p>Water evaporates when being placed inside a cauldron in the nether.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/nether_cauldron.mp4" poster="https://falsehoodmc.github.io/nether_cauldron-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.no_dinnerlava-outer" class="pad">
+		<a id="tweaks.no_dinnerlava"></a>
+		<h2>No Dinnerlava</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.no_dinnerlava</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.3.2</b><br/>
+		<p>Disables the generation of 1 block hidden lava pockets in the Nether. They were initially added to discourage stripmining in the Nether for quartz, but now that Netherite exists, which can only be reasonably obtained via stripmining, it's just frustrating for no real reason.</p>
+<p>&quot;Dinnerlava&quot; refers to the fact this was part of a series of changes all made by Dinnerbone in a short span of time in the 1.5 era mostly on provocation from Vechs of Super Hostile fame.</p>
+
+		</div>
+		</div>
+		<div id="tweaks.no_sneak_bypass-outer" class="pad">
+		<a id="tweaks.no_sneak_bypass"></a>
+		<h2>No Sneak Bypass</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.no_sneak_bypass</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.3.0</b><br/>
+		<p>Blocks which would normally not affect players when sneaking will.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/no_sneak_bypass.mp4" poster="https://falsehoodmc.github.io/no_sneak_bypass-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.normal_fog_with_night_vision-outer" class="pad">
+		<a id="tweaks.normal_fog_with_night_vision"></a>
+		<h2>Normal Fog With Night Vision</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.normal_fog_with_night_vision</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.9</b><br/>
+		<p>Disables the fog brightening effect with Night Vision.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/normal_fog_with_night_vision.mp4" poster="https://falsehoodmc.github.io/normal_fog_with_night_vision-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.play_note_blocks_in_creative-outer" class="pad">
+		<a id="tweaks.play_note_blocks_in_creative"></a>
+		<h2>Play Note Blocks In Creative</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.play_note_blocks_in_creative</code><br/>
+		<b class="sides-server_only_with_client_helper">Server &amp; Client (Client Optional)</b><br/>
+		<b class="since">Added in v1.2.9</b><br/>
+		<p>Allows sneaking when punching note blocks to play them in Creative mode.</p>
+<p>On the client, prevents the break effect from occurring as usually happens with server-side break prevention.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/play_note_blocks_in_creative.mp4" poster="https://falsehoodmc.github.io/play_note_blocks_in_creative-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.rainbow_experience-outer" class="pad">
+		<a id="tweaks.rainbow_experience"></a>
+		<h2>Rainbow Experience</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.rainbow_experience</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.1</b><br/>
+		<p>Makes experience random colors instead of just lime green.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/rainbow_experience.mp4" poster="https://falsehoodmc.github.io/rainbow_experience-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.recipe_book_auto_craft-outer" class="pad">
+		<a id="tweaks.recipe_book_auto_craft"></a>
+		<h2>Recipe Book Auto Craft</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.recipe_book_auto_craft</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Recipe book crafts items instead of moving them to the crafting area.</p>
+
+		</div>
+		</div>
+		<div id="tweaks.reverse_note_block_tuning-outer" class="pad">
+		<a id="tweaks.reverse_note_block_tuning"></a>
+		<h2>Reverse Note Block Tuning</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.reverse_note_block_tuning</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Sneaking while tuning a note block reduces its pitch rather than increases.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/reverse_note_block_tuning.mp4" poster="https://falsehoodmc.github.io/reverse_note_block_tuning-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.see_items_while_riding-outer" class="pad">
+		<a id="tweaks.see_items_while_riding"></a>
+		<h2>See Held Items While Riding</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.see_items_while_riding</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Allows players to see held items while riding entities like boats.</p>
+
+		</div>
+		</div>
+		<div id="tweaks.shulker_bullets_despawn_on_death-outer" class="pad">
+		<a id="tweaks.shulker_bullets_despawn_on_death"></a>
+		<h2>Shulker Bullets Despawn On Death</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.shulker_bullets_despawn_on_death</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes shulker bullets despawn when the shulker that shot them is killed.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/shulker_bullets_despawn_on_death.mp4" poster="https://falsehoodmc.github.io/shulker_bullets_despawn_on_death-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="tweaks.silent_minecarts-outer" class="pad">
+		<a id="tweaks.silent_minecarts"></a>
+		<h2>Silent Minecarts</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.silent_minecarts</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Makes minecarts silent.</p>
+
+		</div>
+		</div>
+		<div id="tweaks.tridents_in_void_return-outer" class="pad">
+		<a id="tweaks.tridents_in_void_return"></a>
+		<h2>Tridents In Void Return</h2>
+		<div class="indent">
+		<b>Key</b>: <code>tweaks.tridents_in_void_return</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes Loyalty tridents immune to void damage, and causes them to start their return timer upon falling into the void.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/tridents_in_void_return.mp4" poster="https://falsehoodmc.github.io/tridents_in_void_return-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div id="minor_mechanics-outer" class="pad">
+		<a id="minor_mechanics"></a>
+		<h1>Minor Mechanics</h1>
+		<div>
+		<div id="minor_mechanics.cactus_punching_hurts-outer" class="pad">
+		<a id="minor_mechanics.cactus_punching_hurts"></a>
+		<h2>Cactus Punching Hurts</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.cactus_punching_hurts</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Breaking cactus with your hand will damage you the same as hugging it.</p>
+
+		</div>
+		</div>
+		<div id="minor_mechanics.crawling-outer" class="pad">
+		<a id="minor_mechanics.crawling"></a>
+		<h2>Crawling</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.crawling</code><br/>
+		<b class="sides-server_and_client">Server &amp; Client</b><br/>
+		<b class="since">Added in v1.3.0</b><br/>
+		<p>Adds a key to explicitly enter the &quot;crawling&quot; stance. No more smushing yourself with a trapdoor. Needed on both the server and client, but doesn't break vanilla clients.</p>
+<p>Honors the vanilla &quot;Sneak&quot; Accessibility Option. Interacts with Utility &gt; Toggle Stance.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/crawling.mp4" poster="https://falsehoodmc.github.io/crawling-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="minor_mechanics.exact_note_block_tuning-outer" class="pad">
+		<a id="minor_mechanics.exact_note_block_tuning"></a>
+		<h2>Exact Note Block Tuning</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.exact_note_block_tuning</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Right-clicking a note block with a stack of sticks sets its pitch to the size of the stack minus one.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/exact_note_block_tuning.mp4" poster="https://falsehoodmc.github.io/exact_note_block_tuning-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="minor_mechanics.feather_falling_five-outer" class="pad">
+		<a id="minor_mechanics.feather_falling_five"></a>
+		<h2>Feather Falling V</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.feather_falling_five</code><br/>
+		<b class="sides-server_only_with_client_helper">Server &amp; Client (Client Optional)</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes Feather Falling V a valid enchant that completely negates fall damage. Optionally does damage to the boots.</p>
+<p>If present on the client, makes the enchantment available in the Creative menu.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/feather_falling_five.mp4" poster="https://falsehoodmc.github.io/feather_falling_five-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="minor_mechanics.feather_falling_five_damages_boots-outer" class="pad">
+		<a id="minor_mechanics.feather_falling_five_damages_boots"></a>
+		<h2>Feather Falling V Damages Boots</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.feather_falling_five_damages_boots</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes absorbing fall damage with Feather Falling V cause damage to the boots.</p>
+
+		</div>
+		</div>
+		<div id="minor_mechanics.fire_aspect_is_flint_and_steel-outer" class="pad">
+		<a id="minor_mechanics.fire_aspect_is_flint_and_steel"></a>
+		<h2>Fire Aspect Is Flint And Steel</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.fire_aspect_is_flint_and_steel</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.1.1</b><br/>
+		<p>Right-clicking a block with no action with a Fire Aspect tool emulates a click with flint and steel, allowing you to light fires and such with a Fire Aspect tool instead of having to carry around flint and steel.</p>
+<p>Since it emulates clicking with a Flint and Steel, it's highly compatible.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/fire_aspect_is_flint_and_steel.mp4" poster="https://falsehoodmc.github.io/fire_aspect_is_flint_and_steel-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="minor_mechanics.fire_protection_on_any_item-outer" class="pad">
+		<a id="minor_mechanics.fire_protection_on_any_item"></a>
+		<h2>Fire Protection On Any Item</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.fire_protection_on_any_item</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Fire Protection can be applied to any enchantable item, and makes the item immune to fire and lava damage.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/fire_protection_on_any_item.mp4" poster="https://falsehoodmc.github.io/fire_protection_on_any_item-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="minor_mechanics.furnace_minecart_any_fuel-outer" class="pad">
+		<a id="minor_mechanics.furnace_minecart_any_fuel"></a>
+		<h2>Furnace Minecart Accepts Any Fuel</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.furnace_minecart_any_fuel</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Allows furnace minecarts to accept any furnace fuel, rather than just coal and charcoal.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/furnace_minecart_any_fuel.mp4" poster="https://falsehoodmc.github.io/furnace_minecart_any_fuel-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="minor_mechanics.infibows-outer" class="pad">
+		<a id="minor_mechanics.infibows"></a>
+		<h2>InfiBows</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.infibows</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes Infinity bows not require an arrow in your inventory to fire.</p>
+<p>If not present on client, firing bows with no arrows is a bit janky.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/infibows.mp4" poster="https://falsehoodmc.github.io/infibows-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="minor_mechanics.invisibility_splash_on_inanimates-outer" class="pad">
+		<a id="minor_mechanics.invisibility_splash_on_inanimates"></a>
+		<h2>Invisibility Splash On Inanimates</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.invisibility_splash_on_inanimates</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.1.1</b><br/>
+		<p>Invisibility splash potions affect inanimates (minecarts, arrows, etc) making them invisible. They will become visible again if they become wet. This enables the vanilla &quot;invisible&quot; flag, which doesn't work on inanimates unless Fixes &gt; Inanimates Can Be Invisible is also enabled.</p>
+<p>Logic: Invisibility potions coat the outer surface of the object. Living entities absorb and eventually eliminate the compound, and when drank it exudes from the pores, but inanimate objects do not have metabolisms, so the invisibility hangs around indefinitely unless washed off. Don't @ me about skeletons.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/invisibility_splash_on_inanimates.mp4" poster="https://falsehoodmc.github.io/invisibility_splash_on_inanimates-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="minor_mechanics.mechanism_muffling-outer" class="pad">
+		<a id="minor_mechanics.mechanism_muffling"></a>
+		<h2>Mechanism Muffling</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.mechanism_muffling</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.2.8</b><br/>
+		<p>Placing a block of wool adjacent to a dispenser, dropper, or piston makes it silent.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/mechanism_muffling.mp4" poster="https://falsehoodmc.github.io/mechanism_muffling-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="minor_mechanics.note_block_notes-outer" class="pad">
+		<a id="minor_mechanics.note_block_notes"></a>
+		<h2>Note Block Notes</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.note_block_notes</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Tells you the note the note block has been tuned to when tuning it or playing it manually above your hotbar. Also shows the octave, and shows the correct note for the snare and click instruments. (The bass drum is hard to nail down and so does not show note or octave info; if you know the best way to describe the bass drum, please let me know in an issue.)</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/note_block_notes.mp4" poster="https://falsehoodmc.github.io/note_block_notes-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="minor_mechanics.note_blocks_play_on_landing-outer" class="pad">
+		<a id="minor_mechanics.note_blocks_play_on_landing"></a>
+		<h2>Note Blocks Play On Landing</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.note_blocks_play_on_landing</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes note blocks play when landed on. The higher the entity fell, the louder the note will be. Also triggers Observers.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/note_blocks_play_on_landing.mp4" poster="https://falsehoodmc.github.io/note_blocks_play_on_landing-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="minor_mechanics.observers_see_entities-outer" class="pad">
+		<a id="minor_mechanics.observers_see_entities"></a>
+		<h2>Observers See Entities</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.observers_see_entities</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Observers detect when entities move in front of them if they have no block in front of them. Not as laggy as it sounds.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/observers_see_entities.mp4" poster="https://falsehoodmc.github.io/observers_see_entities-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="minor_mechanics.observers_see_entities_living_only-outer" class="pad">
+		<a id="minor_mechanics.observers_see_entities_living_only"></a>
+		<h2>Observers See Entities - Living Only</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.observers_see_entities_living_only</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Observers only detect living entities, and not e.g. item entities.</p>
+<p>Safety option to prevent breaking a variety of vanilla contraptions.</p>
+
+		</div>
+		</div>
+		<div id="minor_mechanics.spiders_cant_climb_glazed_terracotta-outer" class="pad">
+		<a id="minor_mechanics.spiders_cant_climb_glazed_terracotta"></a>
+		<h2>Spiders Can&#x27;t Climb Glazed Terracotta</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.spiders_cant_climb_glazed_terracotta</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0.2</b><br/>
+		<p>Makes spiders unable to climb glazed terracotta, to make farming them less of a chore if you go to the trouble to make glazed terracotta.</p>
+<p>Logic: Slime blocks can't stick to glazed terracotta. Are spiders really stickier than solid slime?</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/spiders_cant_climb_glazed_terracotta.mp4" poster="https://falsehoodmc.github.io/spiders_cant_climb_glazed_terracotta-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="minor_mechanics.spiders_cant_climb_while_wet-outer" class="pad">
+		<a id="minor_mechanics.spiders_cant_climb_while_wet"></a>
+		<h2>Spiders Can&#x27;t Climb While Wet</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.spiders_cant_climb_while_wet</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.2.3</b><br/>
+		<p>Makes spiders unable to climb while wet. Basically a more overpowered version of Spiders Can't Climb Glazed Terracotta. May break vanilla spider farms.</p>
+<p>Interacts with Enhanced Moistness, and the demo video uses it for the water splash to work like it does.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/spiders_cant_climb_while_wet.mp4" poster="https://falsehoodmc.github.io/spiders_cant_climb_while_wet-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="minor_mechanics.tridents_activate_levers-outer" class="pad">
+		<a id="minor_mechanics.tridents_activate_levers"></a>
+		<h2>Tridents Activate Levers</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.tridents_activate_levers</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>When a trident hits a lever it will toggle it.</p>
+
+		</div>
+		</div>
+		<div id="minor_mechanics.unsaddle_creatures-outer" class="pad">
+		<a id="minor_mechanics.unsaddle_creatures"></a>
+		<h2>Unsaddle Creatures</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.unsaddle_creatures</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Shift right click with an empty hand to retrieve a saddle from a pig/strider.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/unsaddle_creatures.mp4" poster="https://falsehoodmc.github.io/unsaddle_creatures-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="minor_mechanics.water_fills_on_break-outer" class="pad">
+		<a id="minor_mechanics.water_fills_on_break"></a>
+		<h2>Water Fills On Break</h2>
+		<div class="indent">
+		<b>Key</b>: <code>minor_mechanics.water_fills_on_break</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.1.1</b><br/>
+		<p>Water source blocks fill in broken blocks instead of air if there is more water on its north, east, south, west, and top faces than there is air on its north, east, south, and west faces. In case of a tie, air wins. Makes terraforming lakes and building canals, etc much less frustrating.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/water_fills_on_break.mp4" poster="https://falsehoodmc.github.io/water_fills_on_break-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div id="mechanics-outer" class="pad">
+		<a id="mechanics"></a>
+		<h1>Mechanics</h1>
+		<div>
+		<div id="mechanics.anvil_repair-outer" class="pad">
+		<a id="mechanics.anvil_repair"></a>
+		<h2>Anvil Repair</h2>
+		<div class="indent">
+		<b>Key</b>: <code>mechanics.anvil_repair</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.2.9</b><br/>
+		<p>Allows right-clicking on an anvil with a Block of Iron to repair it one stage.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/anvil_repair.mp4" poster="https://falsehoodmc.github.io/anvil_repair-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="mechanics.bottled_air-outer" class="pad">
+		<a id="mechanics.bottled_air"></a>
+		<h2>Bottled Air</h2>
+		<div class="indent">
+		<b>Key</b>: <code>mechanics.bottled_air</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.3.3</b><br/>
+		<p>Filling a glass bottle underwater refills 1 air bubble.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/bottled_air.mp4" poster="https://falsehoodmc.github.io/bottled_air-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="mechanics.broken_tools_drop_components-outer" class="pad">
+		<a id="mechanics.broken_tools_drop_components"></a>
+		<h2>Broken Gear Drops Components</h2>
+		<div class="indent">
+		<b>Key</b>: <code>mechanics.broken_tools_drop_components</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.1.2</b><br/>
+		<p>Makes gear drop its consituent items when broken. This is completely configurable in config/fabrication/gear_components.ini.</p>
+<p>Also works with nonplayer entities, where it is affected by their drop chance table.</p>
+
+		<p>
+			<a href="https://github.com/unascribed/Fabrication/blob/trunk/src/main/resources/default_gear_components_config.ini">See the default config for more info</a>
+		</p>
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/broken_tools_drop_components.mp4" poster="https://falsehoodmc.github.io/broken_tools_drop_components-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="mechanics.enhanced_moistness-outer" class="pad">
+		<a id="mechanics.enhanced_moistness"></a>
+		<h2>Enhanced Moistness</h2>
+		<div class="indent">
+		<b>Key</b>: <code>mechanics.enhanced_moistness</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Entities are considered &quot;wet&quot; for 5 seconds after leaving a source of wetness. Additionally, lingering or splash water bottles inflict wetness. Also makes wet entities drip to show they're wet. Affects various vanilla mechanics including fire and undead burning.</p>
+<p>Touching lava instantly removes wetness, meaning lava blades still work.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/enhanced_moistness.mp4" poster="https://falsehoodmc.github.io/enhanced_moistness-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="mechanics.grindstone_disenchanting-outer" class="pad">
+		<a id="mechanics.grindstone_disenchanting"></a>
+		<h2>Grindstone Disenchanting</h2>
+		<div class="indent">
+		<b>Key</b>: <code>mechanics.grindstone_disenchanting</code><br/>
+		<b class="sides-server_and_client">Server &amp; Client</b><br/>
+		<b class="since">Added in v1.2.8</b><br/>
+		<p>Placing a book in the bottom slot of a Grindstone when disenchanting an item will transfer the enchantments onto the book.</p>
+<p>Doesn't work properly if the client doesn't also have it, but it will not break vanilla clients.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/grindstone_disenchanting.mp4" poster="https://falsehoodmc.github.io/grindstone_disenchanting-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="mechanics.obsidian_tears-outer" class="pad">
+		<a id="mechanics.obsidian_tears"></a>
+		<h2>Obsidian Tears</h2>
+		<div class="indent">
+		<b>Key</b>: <code>mechanics.obsidian_tears</code><br/>
+		<b class="sides-server_only_with_client_helper">Server &amp; Client (Client Optional)</b><br/>
+		<b class="since">Added in v1.2.8</b><br/>
+		<p>Empty bottles can be used to collect &quot;Obsidian Tears&quot; from Crying Obsidian. When quaffed by or dispensed onto a player, it updates their spawn to the location of the block the tears are from. Dispensers can also be used to fill empty bottles with tears.</p>
+<p>Crying Obsidian respawn works in any dimension and doesn't need to be recharged, but you spawn with half health, no saturation, less than full food, and Weakness.</p>
+<p>On client, just gives the bottle a custom appearance instead of a potion item.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/obsidian_tears.mp4" poster="https://falsehoodmc.github.io/obsidian_tears-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="mechanics.pursurvers-outer" class="pad">
+		<a id="mechanics.pursurvers"></a>
+		<h2>Pursurvers</h2>
+		<div class="indent">
+		<b>Key</b>: <code>mechanics.pursurvers</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.3.2</b><br/>
+		<p>Adds &quot;Pursurvers&quot;, observers with a Purpur block next to them, that can detect left-clicks on their watched block.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/pursurvers.mp4" poster="https://falsehoodmc.github.io/pursurvers-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="mechanics.slowfall_splash_on_inanimates-outer" class="pad">
+		<a id="mechanics.slowfall_splash_on_inanimates"></a>
+		<h2>Slow Fall Splash On Inanimates</h2>
+		<div class="indent">
+		<b>Key</b>: <code>mechanics.slowfall_splash_on_inanimates</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.1.1</b><br/>
+		<p>Slow fall splash potions affect inanimates (minecarts, arrows, etc) making them unaffected by gravity. They will become normally affected again if they become wet.</p>
+<p>This is kind of overpowered.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/slowfall_splash_on_inanimates.mp4" poster="https://falsehoodmc.github.io/slowfall_splash_on_inanimates-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div id="balance-outer" class="pad">
+		<a id="balance"></a>
+		<h1>Balance</h1>
+		<div>
+		<div id="balance.anvil_damage_only_on_fall-outer" class="pad">
+		<a id="balance.anvil_damage_only_on_fall"></a>
+		<h2>Anvils Take Damage Only When Falling</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.anvil_damage_only_on_fall</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.1</b><br/>
+		<p>Anvils only take damage when falling from a height rather than randomly after being used.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/anvil_damage_only_on_fall.mp4" poster="https://falsehoodmc.github.io/anvil_damage_only_on_fall-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="balance.anvil_full_repair-outer" class="pad">
+		<a id="balance.anvil_full_repair"></a>
+		<h2>Anvil Fully Repairs</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.anvil_full_repair</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Any item repair in the anvil will restore item durability.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/anvil_full_repair.mp4" poster="https://falsehoodmc.github.io/anvil_full_repair-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="balance.anvil_rename_always_costs_one-outer" class="pad">
+		<a id="balance.anvil_rename_always_costs_one"></a>
+		<h2>Anvil Rename Always Costs One</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.anvil_rename_always_costs_one</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.2.9</b><br/>
+		<p>Makes renaming an item on an anvil always cost one level.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/anvil_rename_always_costs_one.mp4" poster="https://falsehoodmc.github.io/anvil_rename_always_costs_one-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="balance.bedrock_impaling-outer" class="pad">
+		<a id="balance.bedrock_impaling"></a>
+		<h2>Bedrock-Like Impaling</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.bedrock_impaling</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes the Impaling enchantment act like it does in Bedrock Edition and Combat Test 4. Namely, it deals bonus damage to anything that is in water or rain (i.e. is wet), instead of only aquatic mobs.</p>
+<p>Interacts with Enhanced Moistness.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/bedrock_impaling.mp4" poster="https://falsehoodmc.github.io/bedrock_impaling-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="balance.disable_elytra_boost-outer" class="pad">
+		<a id="balance.disable_elytra_boost"></a>
+		<h2>Disable Elytra Boost</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.disable_elytra_boost</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Prevent Elytra boosting using firework rockets.</p>
+
+		</div>
+		</div>
+		<div id="balance.disable_mending-outer" class="pad">
+		<a id="balance.disable_mending"></a>
+		<h2>Disable Mending</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.disable_mending</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Stops the mending enchantment from working.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/disable_mending.mp4" poster="https://falsehoodmc.github.io/disable_mending-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="balance.disable_mending_trade-outer" class="pad">
+		<a id="balance.disable_mending_trade"></a>
+		<h2>Disable Mending Trade</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.disable_mending_trade</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Stops new villagers from offering mending.</p>
+
+		</div>
+		</div>
+		<div id="balance.disable_pearl_stasis-outer" class="pad">
+		<a id="balance.disable_pearl_stasis"></a>
+		<h2>Disable Storing Thrown Ender Pearls</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.disable_pearl_stasis</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Ender pearls forget who threw them when being unloaded. Which means saving a ender pearl in a bubble column becomes more difficult.</p>
+
+		</div>
+		</div>
+		<div id="balance.disable_prior_work_penalty-outer" class="pad">
+		<a id="balance.disable_prior_work_penalty"></a>
+		<h2>Disable Prior Work Penalty</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.disable_prior_work_penalty</code><br/>
+		<b class="sides-server_only_with_client_helper">Server &amp; Client (Client Optional)</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Disables the anvil prior work penalty when an item has been worked multiple times. Makes non-Mending tools relevant by allowing you to repair them indefinitely, and makes putting books on tools easier.</p>
+<p>If only on the server and not the client, the wrong level cost will briefly be displayed before being corrected.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/disable_prior_work_penalty.mp4" poster="https://falsehoodmc.github.io/disable_prior_work_penalty-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="balance.drop_more_exp_on_death-outer" class="pad">
+		<a id="balance.drop_more_exp_on_death"></a>
+		<h2>Drop More Experience On Death</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.drop_more_exp_on_death</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.2.1</b><br/>
+		<p>Players drop 80% of their experience when dying instead of basically nothing.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/drop_more_exp_on_death.mp4" poster="https://falsehoodmc.github.io/drop_more_exp_on_death-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="balance.ender_dragon_always_spawn_egg-outer" class="pad">
+		<a id="balance.ender_dragon_always_spawn_egg"></a>
+		<h2>Ender Dragon Always Spawns Dragon Egg</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.ender_dragon_always_spawn_egg</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Ender dragon always spawn a dragon egg when killed.</p>
+
+		</div>
+		</div>
+		<div id="balance.ender_dragon_full_xp-outer" class="pad">
+		<a id="balance.ender_dragon_full_xp"></a>
+		<h2>Full Ender Dragon XP</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.ender_dragon_full_xp</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Ender dragon always gives the same xp amount as it would the first time.</p>
+
+		</div>
+		</div>
+		<div id="balance.environmentally_friendly_creepers-outer" class="pad">
+		<a id="balance.environmentally_friendly_creepers"></a>
+		<h2>Environmentally Friendly Creepers</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.environmentally_friendly_creepers</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Creeper explosions deal entity damage, but not block damage, even if mobGriefing is true.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/environmentally_friendly_creepers.mp4" poster="https://falsehoodmc.github.io/environmentally_friendly_creepers-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="balance.faster_obsidian-outer" class="pad">
+		<a id="balance.faster_obsidian"></a>
+		<h2>Faster Obsidian</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.faster_obsidian</code><br/>
+		<b class="sides-server_and_client">Server &amp; Client</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes obsidian and obsidian-related blocks break 3× faster. Needed on both sides to work properly.</p>
+<p>Does not break vanilla clients when on the server, but when on the client, vanilla servers will think you're cheating. (And they won't be wrong.)</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/faster_obsidian.mp4" poster="https://falsehoodmc.github.io/faster_obsidian-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="balance.food_always_edible-outer" class="pad">
+		<a id="balance.food_always_edible"></a>
+		<h2>Food Always Edible</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.food_always_edible</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.3.0</b><br/>
+		<p>Allows players to eat unconditionally.</p>
+
+		</div>
+		</div>
+		<div id="balance.hyperspeed_furnace_minecart-outer" class="pad">
+		<a id="balance.hyperspeed_furnace_minecart"></a>
+		<h2>Hyperspeed Furnace Minecart</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.hyperspeed_furnace_minecart</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes furnace minecarts very fast and burn fuel more quickly.</p>
+<p>An attempt to make rail transport relevant again, as well as furnace carts, in a world with ice roads, swimming, elytra, etc.</p>
+<p>Warning: These carts are so fast that they sometimes fall off of track corners. Make sure to surround track corners with blocks.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/hyperspeed_furnace_minecart.mp4" poster="https://falsehoodmc.github.io/hyperspeed_furnace_minecart-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="balance.infinity_crossbows-outer" class="pad">
+		<a id="balance.infinity_crossbows"></a>
+		<h2>Infinity Crossbows</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.infinity_crossbows</code><br/>
+		<b class="sides-server_only_with_client_helper">Server &amp; Client (Client Optional)</b><br/>
+		<b class="since">Added in v1.2.8</b><br/>
+		<p>Allow putting Infinity on crossbows. Only works for plain arrows.</p>
+<p>Honors InfiBows.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/infinity_crossbows.mp4" poster="https://falsehoodmc.github.io/infinity_crossbows-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="balance.infinity_mending-outer" class="pad">
+		<a id="balance.infinity_mending"></a>
+		<h2>Infinity &amp; Mending</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.infinity_mending</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes Mending and Infinity compatible enchantments.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/infinity_mending.mp4" poster="https://falsehoodmc.github.io/infinity_mending-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="balance.loading_furnace_minecart-outer" class="pad">
+		<a id="balance.loading_furnace_minecart"></a>
+		<h2>ChunkLoading Furnace Minecart</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.loading_furnace_minecart</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.3.4</b><br/>
+		<p>Makes furnace minecarts load chunks if they have fuel.</p>
+
+		</div>
+		</div>
+		<div id="balance.mobs_dont_drop_ingots-outer" class="pad">
+		<a id="balance.mobs_dont_drop_ingots"></a>
+		<h2>Mobs Drop Less Metal</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.mobs_dont_drop_ingots</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>All ingot mob drops are converted to nuggets where possible, otherwise voided.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/mobs_dont_drop_ingots.mp4" poster="https://falsehoodmc.github.io/mobs_dont_drop_ingots-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="balance.pickup_skeleton_arrows-outer" class="pad">
+		<a id="balance.pickup_skeleton_arrows"></a>
+		<h2>Pickup Skeleton Arrows</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.pickup_skeleton_arrows</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Arrows shot by skeletons can be picked up.</p>
+
+		</div>
+		</div>
+		<div id="balance.soul_speed_doesnt_damage_boots-outer" class="pad">
+		<a id="balance.soul_speed_doesnt_damage_boots"></a>
+		<h2>Soul Speed Doesn&#x27;t Damage Boots</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.soul_speed_doesnt_damage_boots</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes running on soul blocks with Soul Speed not deal damage to your boots.</p>
+
+		</div>
+		</div>
+		<div id="balance.spawners_always_tick-outer" class="pad">
+		<a id="balance.spawners_always_tick"></a>
+		<h2>Spawners Always Tick</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.spawners_always_tick</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.3.0</b><br/>
+		<p>Spawners always count down their spawn timers, even if no player is nearby. This means a spawner that is left alone for a while will spawn <em>instantly</em> when a player comes in range. Allows shuttling a player between spawners with a minecart or water stream to efficiently make use of spawners that are close together, but not quite close enough to all be activated at the same time.</p>
+
+		</div>
+		</div>
+		<div id="balance.tridents_accept_power-outer" class="pad">
+		<a id="balance.tridents_accept_power"></a>
+		<h2>Tridents Accept Power</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.tridents_accept_power</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Allows tridents to accept the Power enchantment, increasing their ranged damage. It's pitiful that tridents only deal as much damage as an unenchanted bow and this cannot be improved at all other than via Impaling, which is exclusive to aquatic mobs; notably, Drowned do not count as aquatic mobs. Only the harmless squids, salmon, cod, tropical fish, and the less harmless pufferfish and guardians count as &quot;aquatic&quot;.</p>
+<p>Power is considered incompatible with Sharpness and Impaling.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/tridents_accept_power.mp4" poster="https://falsehoodmc.github.io/tridents_accept_power-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="balance.tridents_accept_sharpness-outer" class="pad">
+		<a id="balance.tridents_accept_sharpness"></a>
+		<h2>Tridents Accept Sharpness</h2>
+		<div class="indent">
+		<b>Key</b>: <code>balance.tridents_accept_sharpness</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Allows tridents to accept the Sharpness enchantment, increasing their melee damage. See above for justification. Tridents deal 1 more damage than a Netherite Sword, but this tweak <em>only</em> allows them to accept Sharpness; no Smite, no Looting, etc.</p>
+<p>Sharpness is considered incompatible with Power and Impaling.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/tridents_accept_sharpness.mp4" poster="https://falsehoodmc.github.io/tridents_accept_sharpness-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div id="weird_tweaks-outer" class="pad">
+		<a id="weird_tweaks"></a>
+		<h1>Weird Tweaks</h1>
+		<div>
+		<div id="weird_tweaks.blaze_fertilizer-outer" class="pad">
+		<a id="weird_tweaks.blaze_fertilizer"></a>
+		<h2>Blaze Powder Grows Nether Wart</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.blaze_fertilizer</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Blaze powder behaves as bone meal for nether wart.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/blaze_fertilizer.mp4" poster="https://falsehoodmc.github.io/blaze_fertilizer-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="weird_tweaks.creepers_explode_when_on_fire-outer" class="pad">
+		<a id="weird_tweaks.creepers_explode_when_on_fire"></a>
+		<h2>Creepers Explode When On Fire</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.creepers_explode_when_on_fire</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Causes creepers to light their fuses when lit on fire. Just because.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/creepers_explode_when_on_fire.mp4" poster="https://falsehoodmc.github.io/creepers_explode_when_on_fire-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="weird_tweaks.dimensional_tools-outer" class="pad">
+		<a id="weird_tweaks.dimensional_tools"></a>
+		<h2>Dimensional Tools</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.dimensional_tools</code><br/>
+		<b class="sides-server_only_with_client_helper">Server &amp; Client (Client Optional)</b><br/>
+		<b class="since">Added in v1.2.10</b><br/>
+		<p>By default, makes breaking nether blocks deal 50x damage to non-golden and non-netherite tools, and makes golden tools take 1/50th the damage when breaking the same blocks, bringing their durability just above diamond. Also makes wooden tools crafted with nether planks into &quot;Fungal&quot; tools, and stone tools crafted with blackstone into &quot;Blackstone&quot; tools, which also get the 1/50th damage bonus. Completely configurable; see config/fabrication/dimensional_tools.ini.</p>
+<p>On client, adjusts tooltips to show fractional damage.</p>
+<p>Inspired by a joke video.</p>
+
+		<p>
+			<a href="https://github.com/unascribed/Fabrication/blob/trunk/src/main/resources/default_dimensional_tools_config.ini">See the default config for more info</a>
+		</p>
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/gold_tools_useful_in_nether.mp4" poster="https://falsehoodmc.github.io/gold_tools_useful_in_nether-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="weird_tweaks.disable_equip_sound-outer" class="pad">
+		<a id="weird_tweaks.disable_equip_sound"></a>
+		<h2>Disable Equip Sound</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.disable_equip_sound</code><br/>
+		<b class="sides-either">Server or Client</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Disables the unnecessary &quot;Gear equips&quot; sound that plays when your hands change, and is often glitchily played every tick. Armor equip sounds and other custom equip sounds remain unchanged. You won't even notice it's gone.</p>
+<p>On client, mutes it just for you.</p>
+<p>On server, prevents the sound from playing at all for everyone.</p>
+
+		</div>
+		</div>
+		<div id="weird_tweaks.disable_nether_fog-outer" class="pad">
+		<a id="weird_tweaks.disable_nether_fog"></a>
+		<h2>Disable Nether Fog</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.disable_nether_fog</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Removes thick nether fog.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/disable_nether_fog.mp4" poster="https://falsehoodmc.github.io/disable_nether_fog-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="weird_tweaks.disable_night_skip-outer" class="pad">
+		<a id="weird_tweaks.disable_night_skip"></a>
+		<h2>Disable Night Skip</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.disable_night_skip</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Prevents beds from skipping the night.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/disable_night_skip.mp4" poster="https://falsehoodmc.github.io/disable_night_skip-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="weird_tweaks.drop_exp_with_keep_inventory-outer" class="pad">
+		<a id="weird_tweaks.drop_exp_with_keep_inventory"></a>
+		<h2>Drop Experience With keepInventory</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.drop_exp_with_keep_inventory</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.2.1</b><br/>
+		<p>If keepInventory is enabled, players still drop their experience when dying, but do so losslessly. Incents returning to where you died even when keepInventory is enabled.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/drop_exp_with_keepinventory.mp4" poster="https://falsehoodmc.github.io/drop_exp_with_keepinventory-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="weird_tweaks.endermen_dont_grief-outer" class="pad">
+		<a id="weird_tweaks.endermen_dont_grief"></a>
+		<h2>Endermen Don&#x27;t Grief</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.endermen_dont_grief</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.3.4</b><br/>
+		<p>Endermen no longer place or pickup blocks.</p>
+
+		</div>
+		</div>
+		<div id="weird_tweaks.endermen_dont_squeal-outer" class="pad">
+		<a id="weird_tweaks.endermen_dont_squeal"></a>
+		<h2>Endermen Don&#x27;t Squeal</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.endermen_dont_squeal</code><br/>
+		<b class="sides-either">Server or Client</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Makes Endermen not make their growling or screeching sounds when angry.</p>
+<p>On client, mutes the sounds for just you. This means angry endermen don't make ambient sounds.</p>
+<p>On server, replaces the angry ambient sound with the normal ambient sound for everyone. The stare sound is client-sided, unfortunately.</p>
+
+		</div>
+		</div>
+		<div id="weird_tweaks.instant_pickup-outer" class="pad">
+		<a id="weird_tweaks.instant_pickup"></a>
+		<h2>Instant Pickup</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.instant_pickup</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.3.2</b><br/>
+		<p>Drops from blocks and entities are instantly placed in your inventory if there's room. This is animated and everything.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/instant_pickup.mp4" poster="https://falsehoodmc.github.io/instant_pickup-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="weird_tweaks.item_safe_cactus-outer" class="pad">
+		<a id="weird_tweaks.item_safe_cactus"></a>
+		<h2>Item Safe Cactus</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.item_safe_cactus</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Items don't get destroyed by cactus blocks.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/item_safe_cactus.mp4" poster="https://falsehoodmc.github.io/item_safe_cactus-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="weird_tweaks.leaves_grow_grass-outer" class="pad">
+		<a id="weird_tweaks.leaves_grow_grass"></a>
+		<h2>Leaves Grow Grass</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.leaves_grow_grass</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Grass and tall grass can be placed on leaves.
+Using Bone Meal on leaves makes them grow grass.</p>
+
+		</div>
+		</div>
+		<div id="weird_tweaks.photoallergic_creepers-outer" class="pad">
+		<a id="weird_tweaks.photoallergic_creepers"></a>
+		<h2>Photoallergic Creepers</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.photoallergic_creepers</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.2.4</b><br/>
+		<p>Creepers burn in sunlight. Very dangerous in combination with Creepers Explode When On Fire.</p>
+<p>Takes precedence over Photoresistant Mobs if that is also enabled, allowing you to make only creepers burn in sunlight.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/photoallergic_creepers.mp4" poster="https://falsehoodmc.github.io/photoallergic_creepers-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="weird_tweaks.photoresistant_mobs-outer" class="pad">
+		<a id="weird_tweaks.photoresistant_mobs"></a>
+		<h2>Photoresistant Mobs</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.photoresistant_mobs</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.2.4</b><br/>
+		<p>Mobs don't burn in sunlight.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/photoresistant_mobs.mp4" poster="https://falsehoodmc.github.io/photoresistant_mobs-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="weird_tweaks.repelling_void-outer" class="pad">
+		<a id="weird_tweaks.repelling_void"></a>
+		<h2>Déjà Void</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.repelling_void</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0</b><br/>
+		<p>Players falling into the void teleports them back to the last place they were on the ground and deals 6 hearts of unblockable void damage.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/repelling_void.mp4" poster="https://falsehoodmc.github.io/repelling_void-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="weird_tweaks.underwater_explosions-outer" class="pad">
+		<a id="weird_tweaks.underwater_explosions"></a>
+		<h2>Underwater Explosions</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.underwater_explosions</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.3.2</b><br/>
+		<p>TNT and other explosives do block damage even underwater.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/underwater_explosions.mp4" poster="https://falsehoodmc.github.io/underwater_explosions-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="weird_tweaks.use_items_while_riding-outer" class="pad">
+		<a id="weird_tweaks.use_items_while_riding"></a>
+		<h2>Use Items While Riding</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.use_items_while_riding</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Allows players to use items and attack while riding entities like boats.</p>
+
+		</div>
+		</div>
+		<div id="weird_tweaks.villagers_follow_emerald_blocks-outer" class="pad">
+		<a id="weird_tweaks.villagers_follow_emerald_blocks"></a>
+		<h2>Villagers Follow Emerald Blocks</h2>
+		<div class="indent">
+		<b>Key</b>: <code>weird_tweaks.villagers_follow_emerald_blocks</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Villagers will follow players holding emerald blocks.</p>
+
+		</div>
+		</div>
+		</div>
+		</div>
+		<div id="woina-outer" class="pad">
+		<a id="woina"></a>
+		<h1>What&#x27;s Old Is New Again</h1>
+		<div>
+		<div id="woina.billboard_drops-outer" class="pad">
+		<a id="woina.billboard_drops"></a>
+		<h2>Billboard Drops</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.billboard_drops</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.8</b><br/>
+		<p>Brings back billboarded flat item drops like on Fast graphics prior to 1.8 or like always prior to 1.4.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/billboard_drops.mp4" poster="https://falsehoodmc.github.io/billboard_drops-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="woina.blinking_drops-outer" class="pad">
+		<a id="woina.blinking_drops"></a>
+		<h2>Blinking Drops</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.blinking_drops</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.4</b><br/>
+		<p>Back in Survival Test, drops blinked white to make them stand out more. This is an implementation of that.</p>
+<p>If Utility &gt; Despawning Items Blink is enabled, that tweak's disappear-flashing will be disabled, and instead this tweak's white flashing will get faster and faster as despawn approaches.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/blinking_drops.mp4" poster="https://falsehoodmc.github.io/blinking_drops-poster.jpg" controls preload="none"></video>
+		<h3>Survival Test video, for reference</h3>
+			<video class="media" src="https://falsehoodmc.github.io/survival_test.mp4" poster="https://falsehoodmc.github.io/survival_test-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="woina.block_logo-outer" class="pad">
+		<a id="woina.block_logo"></a>
+		<h2>Block Logo</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.block_logo</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.4</b><br/>
+		<p>Resurrects the Beta 1.2-era animated falling block logo. Because it looked sweet and it is shameful they removed it.</p>
+<p>The block logo is completely customizable in config/fabrication/block_logo.png and config/fabrication/block_logo.ini. The default is identical to how it was in Beta 1.2.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/block_logo.mp4" poster="https://falsehoodmc.github.io/block_logo-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="woina.classic_block_drops-outer" class="pad">
+		<a id="woina.classic_block_drops"></a>
+		<h2>Classic Block Drops</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.classic_block_drops</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.4</b><br/>
+		<p>Back in Survival Test, likely in the interest of keeping a consistent pixel density in the world, block drops were drawn with an 8x8 portion of the block texture. This didn't always work well back then, and rather than fix things up and design textures with it in mind, it was simply removed.
+This option uses a whitelist in config/fabrication/classic_block_drops.ini to emulate the old behavior, and for anything not whitelisted, uses mipmapped textures.</p>
+<p>This looks pretty neat.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/classic_block_drops.mp4" poster="https://falsehoodmc.github.io/classic_block_drops-poster.jpg" controls preload="none"></video>
+		<h3>Survival Test video, for reference</h3>
+			<video class="media" src="https://falsehoodmc.github.io/survival_test.mp4" poster="https://falsehoodmc.github.io/survival_test-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="woina.dirt_screen-outer" class="pad">
+		<a id="woina.dirt_screen"></a>
+		<h2>Dirt Screen</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.dirt_screen</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Replaces the panorama background of the title screen with the old dirt one.</p>
+
+		</div>
+		</div>
+		<div id="woina.dropped_items_dont_stack-outer" class="pad">
+		<a id="woina.dropped_items_dont_stack"></a>
+		<h2>Dropped Items Don&#x27;t Stack</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.dropped_items_dont_stack</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>When dropping items of the same type they don't merge into a bigger stack.</p>
+
+		</div>
+		</div>
+		<div id="woina.flat_items-outer" class="pad">
+		<a id="woina.flat_items"></a>
+		<h2>Flat Items</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.flat_items</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.8</b><br/>
+		<p>Brings back Indev flat first-person item models.</p>
+<p>&quot;Why?&quot; Why not.</p>
+
+		<h3>Demonstration image</h3>
+			<img class="media" src="https://falsehoodmc.github.io/flat_items.png"/>
+		</div>
+		</div>
+		<div id="woina.instant_bow-outer" class="pad">
+		<a id="woina.instant_bow"></a>
+		<h2>Instant Bow</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.instant_bow</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Bow fires arrows instantly upon clicking.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/instant_bow.mp4" poster="https://falsehoodmc.github.io/instant_bow-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="woina.instant_eat-outer" class="pad">
+		<a id="woina.instant_eat"></a>
+		<h2>Instant Eat</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.instant_eat</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Eating food is instant.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/instant_eat.mp4" poster="https://falsehoodmc.github.io/instant_eat-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="woina.janky_arm-outer" class="pad">
+		<a id="woina.janky_arm"></a>
+		<h2>Janky Arm</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.janky_arm</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.8</b><br/>
+		<p>Brings back Survival Test arm rotation.</p>
+<p>&quot;Why?&quot; Why not.</p>
+
+		<h3>Demonstration image</h3>
+			<img class="media" src="https://falsehoodmc.github.io/janky_arm.png"/>
+		<h3>Survival Test video, for reference</h3>
+			<video class="media" src="https://falsehoodmc.github.io/survival_test.mp4" poster="https://falsehoodmc.github.io/survival_test-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="woina.no_experience-outer" class="pad">
+		<a id="woina.no_experience"></a>
+		<h2>No Experience</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.no_experience</code><br/>
+		<b class="sides-server_only_with_client_helper">Server &amp; Client (Client Optional)</b><br/>
+		<b class="since">Added in v1.3.3</b><br/>
+		<p>Removes experience. Anvils become free and enchanting only costs lapis.</p>
+
+		</div>
+		</div>
+		<div id="woina.no_hand_sway-outer" class="pad">
+		<a id="woina.no_hand_sway"></a>
+		<h2>No Hand Sway</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.no_hand_sway</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Prevents first-person hands from gradually transitioning from the last camera position.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/no_hand_sway.mp4" poster="https://falsehoodmc.github.io/no_hand_sway-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="woina.no_sprint-outer" class="pad">
+		<a id="woina.no_sprint"></a>
+		<h2>No Sprint</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.no_sprint</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Disable sprinting.</p>
+
+		</div>
+		</div>
+		<div id="woina.old_lava-outer" class="pad">
+		<a id="woina.old_lava"></a>
+		<h2>Old Lava</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.old_lava</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.4</b><br/>
+		<p>Resurrects the old procedural lava texture from 1.4. Replace your molten cheese with pasta sauce today! HAYO!</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/old_lava.mp4" poster="https://falsehoodmc.github.io/old_lava-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="woina.old_sheep_shear-outer" class="pad">
+		<a id="woina.old_sheep_shear"></a>
+		<h2>Old Sheep Shear</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.old_sheep_shear</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.3.4</b><br/>
+		<p>Sheep drop wool when punched.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/old_sheep_shear.mp4" poster="https://falsehoodmc.github.io/old_sheep_shear-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="woina.old_tooltip-outer" class="pad">
+		<a id="woina.old_tooltip"></a>
+		<h2>Old Tooltip</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.old_tooltip</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Ressurects the old inventory tooltip from the beta days.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/old_tooltip.mp4" poster="https://falsehoodmc.github.io/old_tooltip-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="woina.oof-outer" class="pad">
+		<a id="woina.oof"></a>
+		<h2>Oof</h2>
+		<div class="indent">
+		<b>Key</b>: <code>woina.oof</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.8</b><br/>
+		<p>Brings back the old &quot;Oof&quot; hurt sound. Unlike the resource pack approach, this is player-specific rather than replacing the generic fleshy damage sound, so it won't result in random things Oof-ing.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/oof.mp4" poster="https://falsehoodmc.github.io/oof-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div id="pedantry-outer" class="pad">
+		<a id="pedantry"></a>
+		<h1>Pedantry</h1>
+		<div>
+		<div id="pedantry.oak_is_apple-outer" class="pad">
+		<a id="pedantry.oak_is_apple"></a>
+		<h2>Oak Is Apple</h2>
+		<div class="indent">
+		<b>Key</b>: <code>pedantry.oak_is_apple</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.0.1</b><br/>
+		<p>Oak trees become apple trees. Because oak trees do not grow apples.</p>
+
+		<h3>Demonstration image</h3>
+			<img class="media" src="https://falsehoodmc.github.io/oak_is_apple.png"/>
+		</div>
+		</div>
+		<div id="pedantry.tnt_is_dynamite-outer" class="pad">
+		<a id="pedantry.tnt_is_dynamite"></a>
+		<h2>TNT Is Dynamite</h2>
+		<div class="indent">
+		<b>Key</b>: <code>pedantry.tnt_is_dynamite</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.0.1</b><br/>
+		<p>TNT is renamed to Dynamite and doesn't say TNT on it. TNT is more stable than Minecraft's representation of it, and the texture is clearly dynamite.</p>
+<p>(Technically dynamite is made from nitroglycerin, but nitro is so incredibly unstable that you would need to change a dozen different mechanics to make it &quot;correct&quot;.)</p>
+<p>Gunpowder is also renamed to Creeper Dust, because gunpowder is not that explosive.</p>
+
+		<h3>Demonstration image</h3>
+			<img class="media" src="https://falsehoodmc.github.io/tnt_is_dynamite.png"/>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div id="situational-outer" class="pad">
+		<a id="situational"></a>
+		<h1>Situational</h1>
+		<div>
+		<div id="situational.all_damage_is_fatal-outer" class="pad">
+		<a id="situational.all_damage_is_fatal"></a>
+		<h2>All Damage Is Fatal</h2>
+		<div class="indent">
+		<b>Key</b>: <code>situational.all_damage_is_fatal</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.0.1</b><br/>
+		<p>Any amount of damage done to an entity is unconditionally fatal.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/all_damage_is_fatal.mp4" poster="https://falsehoodmc.github.io/all_damage_is_fatal-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="situational.disable_bees-outer" class="pad">
+		<a id="situational.disable_bees"></a>
+		<h2>Disable Bees</h2>
+		<div class="indent">
+		<b>Key</b>: <code>situational.disable_bees</code><br/>
+		<b class="sides-either">Server or Client</b><br/>
+		<b class="since">Added in v1.3.4</b><br/>
+		<p>Prevents bee nests generating. Also disables all bee sounds.</p>
+<p>Useful if you have a bee phobia. Makes honey inaccessible; you may want a datapack to make it accessible again, and/or to make empty bee nests craftable for decor.</p>
+<p>Does not delete existing bee nests or bee entities; only fully effective in a new world.</p>
+
+		</div>
+		</div>
+		<div id="situational.disable_elytra-outer" class="pad">
+		<a id="situational.disable_elytra"></a>
+		<h2>Disable Elytra</h2>
+		<div class="indent">
+		<b>Key</b>: <code>situational.disable_elytra</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.3.3</b><br/>
+		<p>Prevents using Elytra.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/disable_elytra.mp4" poster="https://falsehoodmc.github.io/disable_elytra-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="situational.disable_villagers-outer" class="pad">
+		<a id="situational.disable_villagers"></a>
+		<h2>Disable Villagers</h2>
+		<div class="indent">
+		<b>Key</b>: <code>situational.disable_villagers</code><br/>
+		<b class="sides-either">Server or Client</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Prevents villages from generating and zombie villagers from spawning.</p>
+<p>Villagers completely break game balance, among other issues.</p>
+<p>Will not fully take effect unless the game is restarted.</p>
+
+		</div>
+		</div>
+		<div id="situational.item_frame_no_name_display-outer" class="pad">
+		<a id="situational.item_frame_no_name_display"></a>
+		<h2>Item Frames Don&#x27;t Display Name Tags</h2>
+		<div class="indent">
+		<b>Key</b>: <code>situational.item_frame_no_name_display</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Item frames will not display the names of the item inside them.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/item_frame_no_name_display.mp4" poster="https://falsehoodmc.github.io/item_frame_no_name_display-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="situational.player_free_spawners-outer" class="pad">
+		<a id="situational.player_free_spawners"></a>
+		<h2>Player Free Spawners</h2>
+		<div class="indent">
+		<b>Key</b>: <code>situational.player_free_spawners</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.3.0</b><br/>
+		<p>Mob spawners don't require a player nearby to spawn. This can be dangerous on a normal world as it means all loaded spawners will constantly spawn mobs, which makes dungeons pre-loaded monsterboxes and floods abandoned mineshafts with cave spiders. Use carefully, preferably in worlds with structures disabled.</p>
+<p>See Balance &gt; Spawners Always Tick for a less extreme, safer version of this.</p>
+
+		</div>
+		</div>
+		<div id="situational.static_dragon_egg-outer" class="pad">
+		<a id="situational.static_dragon_egg"></a>
+		<h2>Static Dragon Egg</h2>
+		<div class="indent">
+		<b>Key</b>: <code>situational.static_dragon_egg</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.4.0</b><br/>
+		<p>Prevents dragon egg from teleporting.</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/static_dragon_egg.mp4" poster="https://falsehoodmc.github.io/static_dragon_egg-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		<div id="situational.weapons_accept_silk-outer" class="pad">
+		<a id="situational.weapons_accept_silk"></a>
+		<h2>Weapons Accept Silk</h2>
+		<div class="indent">
+		<b>Key</b>: <code>situational.weapons_accept_silk</code><br/>
+		<b class="sides-server_only">Server Only</b><br/>
+		<b class="since">Added in v1.1.2</b><br/>
+		<p>Weapons can be enchanted with Silk Touch, and Silk Touch becomes incompatible with Looting.</p>
+<p>Can be used with datapacks and loot tables (or so I'm told).</p>
+
+		<h3>Demonstration video</h3>
+			<video class="media" src="https://falsehoodmc.github.io/weapons_accept_silk.mp4" poster="https://falsehoodmc.github.io/weapons_accept_silk-poster.jpg" controls preload="none"></video>
+		</div>
+		</div>
+		</div>
+		</div>
+		<div id="experiments-outer" class="pad">
+		<a id="experiments"></a>
+		<h1>Experiments</h1>
+		<div>
+		<div id="experiments.no_set_window_pos-outer" class="pad">
+		<a id="experiments.no_set_window_pos"></a>
+		<h2>No Set Window Pos</h2>
+		<div class="indent">
+		<b>Key</b>: <code>experiments.no_set_window_pos</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.3.2</b><br/>
+		<p>Prevents the game from manually modifying the window position. So if you have custom configs or something that memorizes window positions, they will be honored instead of the window always being centered.</p>
+
+		</div>
+		</div>
+		<div id="experiments.packed_atlases-outer" class="pad">
+		<a id="experiments.packed_atlases"></a>
+		<h2>Packed Atlases</h2>
+		<div class="indent">
+		<b>Key</b>: <code>experiments.packed_atlases</code><br/>
+		<b class="sides-client_only">Client Only</b><br/>
+		<b class="since">Added in v1.2.8</b><br/>
+		<p>Disables rounding of atlases to the next power-of-two. GPU drivers have supported &quot;NPOT&quot; textures since forever.</p>
+<p>Possibly reduces VRAM usage. May reduce performance. Might cause incompatibilites.</p>
+
+		</div>
+		</div>
+		</div>
+		</div>
+	</div>
+</body>
+</html>
